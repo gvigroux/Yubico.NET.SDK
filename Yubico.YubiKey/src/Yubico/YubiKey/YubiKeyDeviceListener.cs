@@ -364,7 +364,7 @@ namespace Yubico.YubiKey
             {
                 return HidDevice
                     .GetHidDevices()
-                    .Where(d => d.IsYubicoDevice() && d.IsFido());
+                    .Where(d => (d.IsYubicoDevice() || d.IsThalesDevice()) && d.IsFido());
             }
             catch (PlatformInterop.PlatformApiException e) { ErrorHandler(e); }
 
@@ -377,7 +377,7 @@ namespace Yubico.YubiKey
             {
                 return HidDevice
                     .GetHidDevices()
-                    .Where(d => d.IsYubicoDevice() && d.IsKeyboard());
+                    .Where(d => (d.IsYubicoDevice() || d.IsThalesDevice()) && d.IsFido());
             }
             catch (PlatformInterop.PlatformApiException e) { ErrorHandler(e); }
 

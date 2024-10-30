@@ -27,7 +27,7 @@ namespace Yubico.YubiKey
         private static readonly ILogger Log = Core.Logging.Log.GetLogger(typeof(FidoDeviceInfoFactory).FullName!);
         public static YubiKeyDeviceInfo GetDeviceInfo(IHidDevice device)
         {
-            if (!device.IsYubicoDevice())
+            if (!device.IsYubicoDevice() && !device.IsThalesDevice())
             {
                 throw new ArgumentException(ExceptionMessages.InvalidDeviceNotYubico, nameof(device));
             }
@@ -72,6 +72,9 @@ namespace Yubico.YubiKey
             {
                 Log.LogInformation("Attempting to read device info via the FIDO interface management command.");
                 using var connection = new FidoConnection(device);
+
+
+                //var response = connection.SendCommand(new VersionCommand());
 
                 deviceInfo = GetDeviceInfoHelper.GetDeviceInfo<GetPagedDeviceInfoCommand>(connection);
                 if (deviceInfo is { })

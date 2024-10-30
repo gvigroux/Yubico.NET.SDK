@@ -25,5 +25,9 @@ namespace Yubico.YubiKey.DeviceExtensions
         public static bool IsYubicoDevice(this IHidDevice device) =>
             device.VendorId == VendorIdentifiers.Yubico
             && ProductIdentifiers.AllYubiKeys.Contains(device.ProductId);
+
+        public static bool IsThalesDevice(this IHidDevice device) =>
+            device.VendorId == VendorIdentifiers.Thales
+            && ProductIdentifiers.AllThalesKeys.Contains(device.ProductId);
     }
 }

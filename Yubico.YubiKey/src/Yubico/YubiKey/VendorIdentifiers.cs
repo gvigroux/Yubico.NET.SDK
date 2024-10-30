@@ -17,5 +17,7 @@ namespace Yubico.YubiKey
     internal class VendorIdentifiers
     {
         public static short Yubico => 0x1050;
+
+        public static short Thales => 0x08E6;
     }
 }

@@ -65,5 +65,14 @@ namespace Yubico.YubiKey
             YubiKeyOtpFidoCcid,
             SecurityKey,
         };
+
+        public const short eTokenFido   = 0x34D1;
+
+        public const short eTokenFusion = 0x34D2;
+
+        public static IList<short> AllThalesKeys => new List<short>()
+        {
+            eTokenFusion
+        };
     }
 }
