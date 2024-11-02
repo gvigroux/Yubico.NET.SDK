@@ -980,7 +980,6 @@ namespace Yubico.YubiKey
             else
             {
                 return string.Compare(SerialNumber, other.SerialNumber, System.StringComparison.Ordinal);
-                //return SerialNumber.Value.CompareTo(other.SerialNumber.Value);
             }
         }
 
