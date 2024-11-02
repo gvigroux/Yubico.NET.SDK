@@ -17,6 +17,7 @@ using System.Buffers.Binary;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
+using System.Globalization;
 using System.Text;
 
 namespace Yubico.YubiKey
@@ -62,7 +63,7 @@ namespace Yubico.YubiKey
         public YubiKeyCapabilities ResetBlocked { get; set; }
 
         /// <inheritdoc />
-        public int? SerialNumber { get; set; }
+        public string? SerialNumber { get; set; }
 
         /// <inheritdoc />
         public bool IsFipsSeries { get; set; }
@@ -171,7 +172,7 @@ namespace Yubico.YubiKey
                         deviceInfo.AvailableUsbCapabilities = GetYubiKeyCapabilities(value);
                         break;
                     case YubikeyDeviceManagementTags.SerialNumberTag:
-                        deviceInfo.SerialNumber = BinaryPrimitives.ReadInt32BigEndian(value);
+                        deviceInfo.SerialNumber = BinaryPrimitives.ReadInt32BigEndian(value).ToString(CultureInfo.InvariantCulture);
                         break;
                     case YubikeyDeviceManagementTags.UsbEnabledCapabilitiesTag:
                         deviceInfo.EnabledUsbCapabilities = GetYubiKeyCapabilities(value);

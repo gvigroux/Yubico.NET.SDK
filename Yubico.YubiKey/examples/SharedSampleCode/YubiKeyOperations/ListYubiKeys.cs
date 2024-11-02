@@ -44,12 +44,12 @@ namespace Yubico.YubiKey.Sample.SharedCode
                 outputList = "\n   YubiKeys:";
                 foreach (var current in yubiKeyDevices)
                 {
-                    int serial = 0;
+                    string serial = "";
                     if (!(current.SerialNumber is null))
                     {
-                        serial = (int)current.SerialNumber;
+                        serial = current.SerialNumber;
                     }
-                    string serialNumber = serial.ToString(CultureInfo.InvariantCulture);
+                    string serialNumber = serial;
 
                     string versionNumber = current.FirmwareVersion.ToString();
                     outputList += "\n   " + serialNumber + " : " + versionNumber;

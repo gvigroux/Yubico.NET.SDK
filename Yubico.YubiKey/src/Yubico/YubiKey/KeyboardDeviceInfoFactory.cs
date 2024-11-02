@@ -14,6 +14,7 @@
 
 using System;
 using System.Diagnostics.CodeAnalysis;
+using System.Globalization;
 using Microsoft.Extensions.Logging;
 using Yubico.Core.Devices.Hid;
 using Yubico.Core.Logging;
@@ -49,7 +50,7 @@ namespace Yubico.YubiKey
             var defaultDeviceInfo = new YubiKeyDeviceInfo();
 
             if (deviceInfo.SerialNumber == defaultDeviceInfo.SerialNumber
-                && TryGetSerialNumberFromKeyboard(device, out int? serialNumber))
+                && TryGetSerialNumberFromKeyboard(device, out string? serialNumber))
             {
                 deviceInfo.SerialNumber = serialNumber;
             }
@@ -102,7 +103,7 @@ namespace Yubico.YubiKey
             return false;
         }
 
-        private static bool TryGetSerialNumberFromKeyboard(IHidDevice device, out int? serialNumber)
+        private static bool TryGetSerialNumberFromKeyboard(IHidDevice device, out string? serialNumber)
         {
             try
             {
@@ -112,7 +113,7 @@ namespace Yubico.YubiKey
                 var response = keyboardConnection.SendCommand(new GetSerialNumberCommand());
                 if (response.Status == ResponseStatus.Success)
                 {
-                    serialNumber = response.GetData();
+                    serialNumber = response.GetData().ToString(CultureInfo.InvariantCulture);
                     Logger.LogInformation("Serial number: {Serial}", serialNumber);
                     return true;
                 }

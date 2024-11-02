@@ -42,36 +42,24 @@ namespace Yubico.YubiKey.Fido2.Commands
     {
         public YubiKeyApplication Application => YubiKeyApplication.Fido2;
 
-        private readonly RandomNumberGenerator _rng;
-
         /// <summary>
         /// Initializes a new instance of the VersionCommand class.
         /// </summary>
-        public ThalesSerialNumberCommand() : this(RandomNumberGenerator.Create())
+        public ThalesSerialNumberCommand()
         {
 
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the VersionCommand class.
-        /// </summary>
-        public ThalesSerialNumberCommand(RandomNumberGenerator rng)
-        {
-            _rng = rng;
         }
 
         /// <inheritdoc />
         public CommandApdu CreateCommandApdu()
         {
-            byte[] payload = new byte[8];
-
-            _rng.GetBytes(payload, 0, 8);
-
+            byte[] payload = new byte[] { 0x55 };
+            
             return new CommandApdu()
             {
-                Ins = (byte)0x00,  //A4 04 00 00,
+                Ins = (byte)0x50,
                 Data = payload
-            };  
+            };
         }
 
         /// <inheritdoc />

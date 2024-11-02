@@ -58,7 +58,7 @@ namespace Yubico.YubiKey
         /// The serial number of the YubiKey, if one is present.
         /// <remarks>Security Keys don't have serial numbers</remarks>
         /// </summary>
-        public int? SerialNumber { get; }
+        public string? SerialNumber { get; }
 
         /// <summary>
         /// Indicates whether or not the YubiKey is a FIPS Series device.

@@ -15,6 +15,7 @@
 using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
+using System.Text;
 using System.Threading;
 using Microsoft.Extensions.Logging;
 using Yubico.Core.Devices;
@@ -61,7 +62,7 @@ namespace Yubico.YubiKey
         public bool IsPinComplexityEnabled => _yubiKeyInfo.IsPinComplexityEnabled;
 
         /// <inheritdoc />
-        public int? SerialNumber => _yubiKeyInfo.SerialNumber;
+        public string? SerialNumber => _yubiKeyInfo.SerialNumber;
 
         /// <inheritdoc />
         public bool IsFipsSeries => _yubiKeyInfo.IsFipsSeries;
@@ -890,7 +891,7 @@ namespace Yubico.YubiKey
             }
             else
             {
-                return SerialNumber.Equals(other.SerialNumber);
+                return string.Equals(SerialNumber, other.SerialNumber, StringComparison.Ordinal);
             }
         }
 
@@ -978,7 +979,8 @@ namespace Yubico.YubiKey
             }
             else
             {
-                return SerialNumber.Value.CompareTo(other.SerialNumber.Value);
+                return string.Compare(SerialNumber, other.SerialNumber, System.StringComparison.Ordinal);
+                //return SerialNumber.Value.CompareTo(other.SerialNumber.Value);
             }
         }
 
@@ -1017,12 +1019,14 @@ namespace Yubico.YubiKey
         /// <inheritdoc/>
         public override int GetHashCode()
         {
-            return !(SerialNumber is null)
-                ? SerialNumber!.GetHashCode()
-                : HashCode.Combine(
+            if( SerialNumber is null )
+            {
+                return HashCode.Combine(
                     _smartCardDevice?.Path,
                     _hidFidoDevice?.Path,
                     _hidKeyboardDevice?.Path);
+            }
+            return HashCode.Combine(SerialNumber);
         }
 
         private static readonly string EOL = Environment.NewLine;

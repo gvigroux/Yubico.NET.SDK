@@ -29,15 +29,15 @@ namespace Yubico.YubiKey.Sample.Fido2SampleCode
         private const int ReinsertTimeoutSeconds = 10;
         private readonly string ReinsertTimeoutString = ReinsertTimeoutSeconds.ToString(NumberFormatInfo.InvariantInfo);
 
-        private int? _serialNumber;
+        private string? _serialNumber;
         private IYubiKeyDevice? _yubiKeyDevice;
         private readonly KeyEntryData _keyEntryData = new KeyEntryData();
 
         // Set the serial number using this property. If there is no serial
         // number (the actual YubiKey's serial number is null), this will be 0.
-        public int SerialNumber
+        public string SerialNumber
         {
-            get => _serialNumber ?? 0;
+            get => _serialNumber ?? "";
             set => _serialNumber = value;
         }
 
@@ -47,7 +47,7 @@ namespace Yubico.YubiKey.Sample.Fido2SampleCode
 
         // Create a new instance that will be able to reset the YubiKey with the
         // given serial number.
-        public Fido2Reset(int? serialNumber)
+        public Fido2Reset(string? serialNumber)
         {
             _serialNumber = serialNumber;
         }
@@ -186,11 +186,11 @@ namespace Yubico.YubiKey.Sample.Fido2SampleCode
                     // Otherwise, we never did call the KeyCollector (there
                     // was likely some error before we could call), so there's no
                     // need to call to release.
-                    if (_keyEntryData.Request == KeyEntryRequest.TouchRequest)
+                    /*if (_keyEntryData.Request == KeyEntryRequest.TouchRequest)
                     {
                         _keyEntryData.Request = KeyEntryRequest.Release;
                         _ = KeyCollector(_keyEntryData);
-                    }
+                    }*/
                 }
             }
         }
@@ -220,9 +220,9 @@ namespace Yubico.YubiKey.Sample.Fido2SampleCode
 
         private void YubiKeyRemoved(object? sender, YubiKeyDeviceEventArgs eventArgs)
         {
-            int serialNumberRemoved = eventArgs.Device.SerialNumber ?? 0;
+            string serialNumberRemoved = eventArgs.Device.SerialNumber ?? "";
 
-            if (serialNumberRemoved != SerialNumber)
+            if (!string.Equals(serialNumberRemoved, SerialNumber, StringComparison.Ordinal))
             {
                 SampleMenu.WriteMessage(MessageType.Special, 0, "The YubiKey removed is not the expected YubiKey.");
                 SampleMenu.WriteMessage(MessageType.Title, 0, "expected serial number = " + SerialNumber.ToString(NumberFormatInfo.InvariantInfo));
@@ -236,9 +236,9 @@ namespace Yubico.YubiKey.Sample.Fido2SampleCode
 
         private void YubiKeyInserted(object? sender, YubiKeyDeviceEventArgs eventArgs)
         {
-            int serialNumberInserted = eventArgs.Device.SerialNumber ?? 0;
+            string serialNumberInserted = eventArgs.Device.SerialNumber ?? "";
 
-            if (serialNumberInserted != SerialNumber)
+            if (!string.Equals(serialNumberInserted, SerialNumber, StringComparison.Ordinal))
             {
                 SampleMenu.WriteMessage(MessageType.Special, 0, "The YubiKey inserted is not the expected YubiKey.");
                 SampleMenu.WriteMessage(MessageType.Title, 0, "expected serial number = " + SerialNumber.ToString(NumberFormatInfo.InvariantInfo));

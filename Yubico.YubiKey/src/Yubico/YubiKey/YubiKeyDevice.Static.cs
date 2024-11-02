@@ -16,6 +16,8 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Net.NetworkInformation;
+using System.Text;
 using Microsoft.Extensions.Logging;
 using Yubico.Core.Devices;
 using Yubico.Core.Devices.Hid;
@@ -119,7 +121,7 @@ namespace Yubico.YubiKey
         /// <returns>A bool indicating whether the YubiKey was found.</returns>
         public static bool TryGetYubiKey(int serialNumber, out IYubiKeyDevice yubiKey)
         {
-            yubiKey = FindAll().FirstOrDefault(k => k.SerialNumber == serialNumber);
+            yubiKey = FindAll().FirstOrDefault(k => k.SerialNumber == serialNumber.ToString(CultureInfo.InvariantCulture));
             return yubiKey != null;
         }
 
@@ -147,15 +149,17 @@ namespace Yubico.YubiKey
                 }
 
                 var objDeviceWithInfo = (YubicoDeviceWithInfo)obj;
-                int? objSerialNumber = objDeviceWithInfo.Info.SerialNumber;
+                string? objSerialNumber = objDeviceWithInfo.Info.SerialNumber;
 
-                int? thisSerialNumber = Info.SerialNumber;
-                return thisSerialNumber.HasValue
-                    && objSerialNumber.HasValue
-                    && thisSerialNumber.Value == objSerialNumber.Value;
+                string? thisSerialNumber = Info.SerialNumber;
+                return !(string.IsNullOrWhiteSpace(thisSerialNumber)
+                    || !string.Equals(thisSerialNumber, objSerialNumber, StringComparison.Ordinal));       
             }
 
-            public override int GetHashCode() => Info.SerialNumber.GetHashCode();
+            public override int GetHashCode()
+            {
+                return HashCode.Combine(Info.SerialNumber);
+            }
 
             private YubiKeyDeviceInfo GetDeviceInfo() =>
                 Device switch

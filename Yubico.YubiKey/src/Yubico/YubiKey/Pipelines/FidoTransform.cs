@@ -14,8 +14,12 @@
 
 using System;
 using System.Buffers.Binary;
+using System.Data;
+using System.Globalization;
 using System.Linq;
 using System.Security.Cryptography;
+using System.Text;
+using System.Text.RegularExpressions;
 using Yubico.Core.Devices.Hid;
 using Yubico.Core.Iso7816;
 using Yubico.YubiKey.Fido2.Commands;
@@ -136,6 +140,16 @@ namespace Yubico.YubiKey.Pipelines
 
         private byte[] TransmitCommand(uint channelId, byte commandByte, byte[] data, out byte responseByte)
         {
+
+            Console.WriteLine("");
+            if(commandByte == 0x10)
+            {
+                Console.WriteLine($"Send CBOR Data {Regex.Replace(BitConverter.ToString(data), "-", string.Empty, RegexOptions.IgnoreCase)}");
+            }
+            else
+            {
+                Console.WriteLine($"Command {commandByte.ToString("X2", CultureInfo.CurrentCulture)} with Data {Regex.Replace(BitConverter.ToString(data), "-", string.Empty, RegexOptions.IgnoreCase)}");
+            }
             SendRequest(channelId, commandByte, data);
 
             byte cmdByte = commandByte;
@@ -145,6 +159,8 @@ namespace Yubico.YubiKey.Pipelines
             }
 
             byte[] responseData = ReceiveResponse(channelId, cmdByte, out responseByte);
+            Console.WriteLine($"Response {Regex.Replace(BitConverter.ToString(responseData), "-", string.Empty, RegexOptions.IgnoreCase)}");
+            Console.WriteLine("");
 
             return responseData;
         }

@@ -105,7 +105,7 @@ namespace Yubico.YubiKey.Sample.SharedCode
             for (int index = 0; index < yubiKeyArray.Length; index++)
             {
                 string versionNumber = yubiKeyArray[index].FirmwareVersion.ToString();
-                string serialNumber = yubiKeyArray[index].SerialNumber.ToString() ?? "No serial number";
+                string serialNumber = yubiKeyArray[index].SerialNumber?.ToString() ?? "No serial number";
                 choices[index] = versionNumber + " : " + serialNumber;
             }
 

@@ -226,7 +226,7 @@ namespace Yubico.YubiKey.Otp.Operations
             }
             _useSerialAsPublicId = true;
 
-            int? serialNumber = Session.YubiKey.SerialNumber;
+            int? serialNumber = int.Parse(Session.YubiKey.SerialNumber, CultureInfo.InvariantCulture);
             if (!serialNumber.HasValue)
             {
                 exceptions.Add(

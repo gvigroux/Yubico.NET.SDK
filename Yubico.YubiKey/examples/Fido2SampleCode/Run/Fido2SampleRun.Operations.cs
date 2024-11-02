@@ -108,14 +108,14 @@ namespace Yubico.YubiKey.Sample.Fido2SampleCode
 
             SampleMenu.WriteMessage(MessageType.Title, 0, "This is the YubiKey for which the FIDO2 application will be reset.\n");
 
-            int? serial = _yubiKeyChosen.SerialNumber;
+            string serial = _yubiKeyChosen.SerialNumber;
             if (serial is null)
             {
                 SampleMenu.WriteMessage(MessageType.Title, 0, "Unknown serial number : version = " + versionNumber);
             }
             else
             {
-                SampleMenu.WriteMessage(MessageType.Title, 0, serial.ToString() + " : version = " + versionNumber);
+                SampleMenu.WriteMessage(MessageType.Title, 0, serial + " : version = " + versionNumber);
             }
 
             response = _menuObject.RunMenu("\nIs this correct?", menuItems);

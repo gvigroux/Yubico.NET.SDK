@@ -14,6 +14,7 @@
 
 using System;
 using System.Diagnostics.CodeAnalysis;
+using System.Globalization;
 using Microsoft.Extensions.Logging;
 using Yubico.Core.Devices.SmartCard;
 using Yubico.Core.Logging;
@@ -48,7 +49,7 @@ namespace Yubico.YubiKey
             if (deviceInfo.SerialNumber == defaultDeviceInfo.SerialNumber
                 && TryGetSerialNumberFromOtp(device, out int? serialNumber))
             {
-                deviceInfo.SerialNumber = serialNumber;
+                deviceInfo.SerialNumber = serialNumber.ToString();
             }
 
             if (deviceInfo.FirmwareVersion == defaultDeviceInfo.FirmwareVersion
@@ -61,7 +62,7 @@ namespace Yubico.YubiKey
             if (deviceInfo.SerialNumber == defaultDeviceInfo.SerialNumber
                 && TryGetSerialNumberFromPiv(device, out serialNumber))
             {
-                deviceInfo.SerialNumber = serialNumber;
+                deviceInfo.SerialNumber = serialNumber.ToString();
             }
 
             if (deviceInfo.FirmwareVersion == defaultDeviceInfo.FirmwareVersion

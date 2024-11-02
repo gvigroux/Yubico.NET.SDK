@@ -73,15 +73,34 @@ namespace Yubico.YubiKey
                 Log.LogInformation("Attempting to read device info via the FIDO interface management command.");
                 using var connection = new FidoConnection(device);
 
-
-                //var response = connection.SendCommand(new VersionCommand());
-
-                deviceInfo = GetDeviceInfoHelper.GetDeviceInfo<GetPagedDeviceInfoCommand>(connection);
-                if (deviceInfo is { })
+                if(device.IsThalesDevice() )
                 {
-                    Log.LogInformation("Successfully read device info via FIDO interface management command.");
-                    return true;
+                    var response = connection.SendCommand(new ThalesSerialNumberCommand());
+                    if (response.Status == ResponseStatus.Success)
+                    {                        
+                        deviceInfo = new YubiKeyDeviceInfo
+                        {
+                            SerialNumber = response.GetData()
+                        };
+
+                        /*
+                        firmwareVersion = response.GetData();
+                        Log.LogInformation("Firmware version: {Version}", firmwareVersion.ToString());*/
+
+                        return true;
+                    }
                 }
+                else
+                {
+                    deviceInfo = GetDeviceInfoHelper.GetDeviceInfo<GetPagedDeviceInfoCommand>(connection);
+                    if (deviceInfo is { })
+                    {
+                        Log.LogInformation("Successfully read device info via FIDO interface management command.");
+                        return true;
+                    }
+                }
+
+
             }
             catch (NotImplementedException e)
             {
@@ -115,7 +134,8 @@ namespace Yubico.YubiKey
                 Log.LogInformation("Attempting to read firmware version through FIDO.");
                 using var connection = new FidoConnection(device);
 
-                var response = connection.SendCommand(new VersionCommand());
+                var response = connection.SendCommand(new VersionCommand());                
+
                 if (response.Status == ResponseStatus.Success)
                 {
                     firmwareVersion = response.GetData();

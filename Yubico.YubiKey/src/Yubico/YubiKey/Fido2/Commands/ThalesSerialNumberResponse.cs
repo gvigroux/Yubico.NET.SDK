@@ -13,6 +13,9 @@
 // limitations under the License.
 
 using System;
+using System.Collections;
+using System.Linq;
+using System.Runtime.InteropServices;
 using Yubico.Core.Iso7816;
 
 namespace Yubico.YubiKey.Fido2.Commands
@@ -28,9 +31,9 @@ namespace Yubico.YubiKey.Fido2.Commands
     /// The data returned is <see cref="FirmwareVersion"/>.
     /// </p>
     /// </remarks>
-    internal class ThalesSerialNumberResponse : Fido2Response, IYubiKeyResponseWithData<FirmwareVersion>
+    internal class ThalesSerialNumberResponse : Fido2Response, IYubiKeyResponseWithData<string>
     {
-        private const int expectedResponseLength = 17;
+        private const int expectedResponseLength = 10;
 
         public ThalesSerialNumberResponse(ResponseApdu responseApdu) :
             base(responseApdu)
@@ -39,7 +42,7 @@ namespace Yubico.YubiKey.Fido2.Commands
         }
 
         /// <inheritdoc/>
-        public FirmwareVersion GetData()
+        public string GetData()
         {
             if (ResponseApdu.SW != SWConstants.Success)
             {
@@ -51,14 +54,8 @@ namespace Yubico.YubiKey.Fido2.Commands
                 throw new MalformedYubiKeyResponseException(ExceptionMessages.UnknownFidoError);
             }
 
-            var responseApduDataSpan = ResponseApdu.Data.Span;
-
-            return new FirmwareVersion
-            {
-                Major = responseApduDataSpan[13],
-                Minor = responseApduDataSpan[14],
-                Patch = responseApduDataSpan[15]
-            };
+            byte[] serialNumberBytes = MemoryMarshal.AsBytes(ResponseApdu.Data.Span.Slice(2)).ToArray();
+            return System.Text.Encoding.Default.GetString(serialNumberBytes);     
         }
     }
 }
