@@ -62,6 +62,7 @@ namespace Yubico.YubiKey.Fido2.Commands
             Array.Copy(encodedParams, 0, payload, 1, encodedParams.Length);
             return new CommandApdu()
             {
+                Cla = 0x80,
                 Ins = CtapConstants.CtapHidCbor,
                 Data = payload
             };

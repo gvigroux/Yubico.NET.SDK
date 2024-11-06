@@ -243,6 +243,7 @@ namespace Yubico.YubiKey.Fido2.Commands
 
             return new CommandApdu()
             {
+                Cla = 0x80,
                 Ins = CtapConstants.CtapHidCbor,
                 Data = data
             };

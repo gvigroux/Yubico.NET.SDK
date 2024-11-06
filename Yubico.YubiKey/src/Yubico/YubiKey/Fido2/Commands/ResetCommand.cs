@@ -57,6 +57,7 @@ namespace Yubico.YubiKey.Fido2.Commands
             byte[] payload = new byte[] { CtapResetCmd };
             return new CommandApdu()
             {
+                Cla = 0x80,
                 Ins = CtapConstants.CtapHidCbor,
                 Data = payload
             };

@@ -57,6 +57,7 @@ namespace Yubico.YubiKey.Management.Commands
         public CommandApdu CreateCommandApdu() =>
             new CommandApdu
             {
+                Cla = 0x80,
                 Ins = SetLegacyDeviceConfigInstruction,
                 P1 = P1DeviceConfiguration,
                 Data = GetDataForApdu(),

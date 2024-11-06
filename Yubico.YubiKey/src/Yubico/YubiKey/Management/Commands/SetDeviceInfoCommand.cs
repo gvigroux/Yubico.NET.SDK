@@ -49,6 +49,7 @@ namespace Yubico.YubiKey.Management.Commands
         public CommandApdu CreateCommandApdu() =>
             new CommandApdu
             {
+                Cla = 0x80,
                 Ins = SetDeviceInfoInstruction,
                 Data = GetDataForApdu(),
             };

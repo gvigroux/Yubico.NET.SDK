@@ -1349,6 +1349,7 @@ namespace Yubico.YubiKey.Fido2
             // Assumption - newPIN is already normalized
             if (newPin.Length < minPinLengthInCodePoints)
             {
+
                 throw new ArgumentException(
                     string.Format(
                         CultureInfo.CurrentCulture,
