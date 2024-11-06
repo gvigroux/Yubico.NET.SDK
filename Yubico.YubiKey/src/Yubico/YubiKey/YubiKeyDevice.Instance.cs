@@ -112,6 +112,7 @@ namespace Yubico.YubiKey
 
         private readonly ILogger _log = Log.GetLogger<YubiKeyDevice>();
 
+        public int PinUvAuthParamLength => _yubiKeyInfo.PinUvAuthParamLength;
         internal ISmartCardDevice GetSmartCardDevice() => _smartCardDevice!;
 
         /// <inheritdoc />

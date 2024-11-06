@@ -57,12 +57,14 @@ namespace Yubico.YubiKey.Fido2.Commands
         /// <param name="authProtocol">
         /// The Auth Protocol used to build the Auth Token.
         /// </param>
+        /// <param name="device"></param>
         public DeleteCredentialCommand(
             CredentialId credentialId,
             ReadOnlyMemory<byte> pinUvAuthToken,
-            PinUvAuthProtocolBase authProtocol)
+            PinUvAuthProtocolBase authProtocol,
+            IYubiKeyDevice device)
             : base(new CredentialManagementCommand(
-            SubCmdDeleteCredential, EncodeParams(credentialId), pinUvAuthToken, authProtocol))
+            SubCmdDeleteCredential, EncodeParams(credentialId), pinUvAuthToken, authProtocol, device))
         {
         }
 

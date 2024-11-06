@@ -69,12 +69,14 @@ namespace Yubico.YubiKey.Fido2.Commands
         /// <param name="authProtocol">
         /// The Auth Protocol used to build the Auth Token.
         /// </param>
+        /// <param name="device"></param>
         public EnumerateCredentialsBeginCommand(
             RelyingParty relyingParty,
             ReadOnlyMemory<byte> pinUvAuthToken,
-            PinUvAuthProtocolBase authProtocol)
+            PinUvAuthProtocolBase authProtocol,
+            IYubiKeyDevice device)
             : base(new CredentialManagementCommand(
-            SubCmdEnumerateCredsBegin, EncodeParams(relyingParty), pinUvAuthToken, authProtocol))
+            SubCmdEnumerateCredsBegin, EncodeParams(relyingParty), pinUvAuthToken, authProtocol, device))
         {
         }
 

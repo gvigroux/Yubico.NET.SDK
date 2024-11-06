@@ -49,7 +49,7 @@ namespace Yubico.YubiKey.Sample.Fido2SampleCode
                 // over the HID FIDO protocol. This is the protocol used to
                 // communicate with the Fido2 application.
                 // Using Transport.HidFido finds all YubiKeys connected via USB.
-                Fido2MainMenuItem.ListYubiKeys => ListYubiKeys.RunListYubiKeys(Transport.HidFido),
+                Fido2MainMenuItem.ListYubiKeys => ListYubiKeys.RunListYubiKeys(Transport.All),
                 Fido2MainMenuItem.ChooseYubiKey => RunChooseYubiKey(),
                 Fido2MainMenuItem.SetPin => RunSetPin(),
                 Fido2MainMenuItem.ChangePin => RunChangePin(),

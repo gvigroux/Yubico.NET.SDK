@@ -21,7 +21,7 @@ namespace Yubico.YubiKey.Fido2.Commands
     /// Command to get the device firmware version.
     /// </summary>
     /// <remarks>
-    /// The partner Response class is <see cref="ThalesSerialNumberResponse"/>.
+    /// The partner Response class is <see cref="GetThalesSerialNumberResponse"/>.
     /// <p>
     /// This command does not work over NFC - it must be run over CTAPHID.
     /// </p>
@@ -38,14 +38,14 @@ namespace Yubico.YubiKey.Fido2.Commands
     /// }
     /// </code>
     /// </remarks>
-    internal sealed class ThalesSerialNumberCommand : IYubiKeyCommand<ThalesSerialNumberResponse>
+    internal sealed class GetThalesSerialNumberCommand : IYubiKeyCommand<GetThalesSerialNumberResponse>
     {
         public YubiKeyApplication Application => YubiKeyApplication.Fido2;
 
         /// <summary>
         /// Initializes a new instance of the VersionCommand class.
         /// </summary>
-        public ThalesSerialNumberCommand()
+        public GetThalesSerialNumberCommand()
         {
 
         }
@@ -63,7 +63,7 @@ namespace Yubico.YubiKey.Fido2.Commands
         }
 
         /// <inheritdoc />
-        public ThalesSerialNumberResponse CreateResponseForApdu(ResponseApdu responseApdu) =>
-            new ThalesSerialNumberResponse(responseApdu);
+        public GetThalesSerialNumberResponse CreateResponseForApdu(ResponseApdu responseApdu) =>
+            new GetThalesSerialNumberResponse(responseApdu);
     }
 }

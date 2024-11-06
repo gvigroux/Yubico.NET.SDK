@@ -197,17 +197,17 @@ namespace Yubico.YubiKey.Sample.Fido2SampleCode
 
                 fido2Session.KeyCollector = KeyCollectorDelegate;
 
-                (int credCount, int remainingCount) = fido2Session.GetCredentialMetadata();
+                (int credCount, int remainingCount) = fido2Session.GetCredentialMetadata(yubiKey);
 
                 returnValue.Add(new Tuple<int, int>(credCount, remainingCount));
 
-                var rpList = fido2Session.EnumerateRelyingParties();
+                var rpList = fido2Session.EnumerateRelyingParties(yubiKey);
                 foreach (var currentRp in rpList)
                 {
                     returnValue.Add(currentRp);
 
                     var credentialList =
-                        fido2Session.EnumerateCredentialsForRelyingParty(currentRp);
+                        fido2Session.EnumerateCredentialsForRelyingParty(currentRp, yubiKey);
 
                     foreach (var currentCredential in credentialList)
                     {
@@ -231,7 +231,7 @@ namespace Yubico.YubiKey.Sample.Fido2SampleCode
 
                 // This method will automatically perform any PIN or fingerprint
                 // verification needed.
-                fido2Session.UpdateUserInfoForCredential(credentialId, updatedInfo);
+                fido2Session.UpdateUserInfoForCredential(credentialId, updatedInfo, yubiKey);
             }
 
             return true;
@@ -248,7 +248,7 @@ namespace Yubico.YubiKey.Sample.Fido2SampleCode
 
                 // This method will automatically perform any PIN or fingerprint
                 // verification needed.
-                fido2Session.DeleteCredential(credentialId);
+                fido2Session.DeleteCredential(credentialId, yubiKey);
             }
 
             return true;
@@ -432,7 +432,7 @@ namespace Yubico.YubiKey.Sample.Fido2SampleCode
 
                 // This method will automatically perform any PIN or fingerprint
                 // verification needed.
-                return fido2Session.TryEnableEnterpriseAttestation();
+                return fido2Session.TryEnableEnterpriseAttestation(yubiKey);
             }
         }
 
@@ -443,13 +443,14 @@ namespace Yubico.YubiKey.Sample.Fido2SampleCode
         {
             newValue = OptionValue.Unknown;
 
+
             using (var fido2Session = new Fido2Session(yubiKey))
             {
                 fido2Session.KeyCollector = KeyCollectorDelegate;
 
                 // This method will automatically perform any PIN or fingerprint
                 // verification needed.
-                bool isValid = fido2Session.TryToggleAlwaysUv();
+                bool isValid = fido2Session.TryToggleAlwaysUv(yubiKey);
                 if (isValid)
                 {
                     newValue = fido2Session.AuthenticatorInfo.GetOptionValue(AuthenticatorOptions.alwaysUv);
@@ -473,7 +474,7 @@ namespace Yubico.YubiKey.Sample.Fido2SampleCode
 
                 // This method will automatically perform any PIN or fingerprint
                 // verification needed.
-                return fido2Session.TrySetPinConfig(newMinPinLength, relyingPartyIds, forceChangePin);
+                return fido2Session.TrySetPinConfig(yubiKey, newMinPinLength, relyingPartyIds, forceChangePin);
             }
         }
 #nullable restore

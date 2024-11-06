@@ -67,6 +67,17 @@ namespace Yubico.YubiKey
                 }
             );
 
+
+        public static readonly AnswerToReset eTokenFusionNfc =
+            new AnswerToReset(
+                new byte[] {
+                    0x3B, 0x8F, 0x80, 0x01, 0x80, 0x31, 0x80, 0x65,
+                    0xB0, 0x88, 0x66, 0x6B, 0x39, 0x12, 0x01, 0x78,
+                    0x82, 0x90, 0x00, 0x2F
+                }
+            );
+
+
         public static IList<AnswerToReset> UsbYubiKeys => new List<AnswerToReset>()
         {
             YubiKeyNeoUsb,
@@ -87,6 +98,10 @@ namespace Yubico.YubiKey
             YubiKey4Usb,
             YubiKey5Nfc,
             YubiKey5Usb,
+        };
+        public static IList<AnswerToReset> AllThalesKeys => new List<AnswerToReset>()
+        {
+            eTokenFusionNfc
         };
     }
 }

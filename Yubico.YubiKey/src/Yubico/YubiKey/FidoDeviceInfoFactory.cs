@@ -75,18 +75,14 @@ namespace Yubico.YubiKey
 
                 if(device.IsThalesDevice() )
                 {
-                    var response = connection.SendCommand(new ThalesSerialNumberCommand());
+                    var response = connection.SendCommand(new GetThalesSerialNumberCommand());
                     if (response.Status == ResponseStatus.Success)
                     {                        
                         deviceInfo = new YubiKeyDeviceInfo
                         {
-                            SerialNumber = response.GetData()
+                            SerialNumber = response.GetData(),
+                            PinUvAuthParamLength = 32
                         };
-
-                        /*
-                        firmwareVersion = response.GetData();
-                        Log.LogInformation("Firmware version: {Version}", firmwareVersion.ToString());*/
-
                         return true;
                     }
                 }

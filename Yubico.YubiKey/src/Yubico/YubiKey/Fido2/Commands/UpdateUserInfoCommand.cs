@@ -76,14 +76,16 @@ namespace Yubico.YubiKey.Fido2.Commands
         /// <param name="authProtocol">
         /// The Auth Protocol used to build the Auth Token.
         /// </param>
+        /// <param name="device"></param>
         public UpdateUserInfoCommand(
             CredentialId credentialId,
             UserEntity userEntity,
             ReadOnlyMemory<byte> pinUvAuthToken,
-            PinUvAuthProtocolBase authProtocol)
+            PinUvAuthProtocolBase authProtocol,
+            IYubiKeyDevice device)
         {
             _command = new CredentialManagementCommand(
-                SubCmdUpdateUserInfo, EncodeParams(credentialId, userEntity), pinUvAuthToken, authProtocol);
+                SubCmdUpdateUserInfo, EncodeParams(credentialId, userEntity), pinUvAuthToken, authProtocol, device);
         }
 
         /// <inheritdoc />

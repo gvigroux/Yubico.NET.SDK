@@ -13,8 +13,10 @@
 // limitations under the License.
 
 using System;
+using System.Data;
 using System.Globalization;
 using System.Linq;
+using System.Text.RegularExpressions;
 using Microsoft.Extensions.Logging;
 using Yubico.Core.Buffers;
 using Yubico.Core.Devices.SmartCard;
@@ -118,7 +120,13 @@ namespace Yubico.YubiKey
 
             _log.LogInformation("Selecting smart card application [{AID}]", Hex.BytesToHex(_applicationId ?? _yubiKeyApplication.GetIso7816ApplicationId()));
             
+            //Console.WriteLine($"Command {Regex.Replace(BitConverter.ToString(selectApplicationCommand.CreateCommandApdu().AsByteArray()), "-", string.Empty, RegexOptions.IgnoreCase)}");
+
             var responseApdu = _smartCardConnection.Transmit(selectApplicationCommand.CreateCommandApdu());
+
+            //Console.WriteLine($"Response {Regex.Replace(responseApdu.SW1.ToString("X2", CultureInfo.InvariantCulture), "-", string.Empty, RegexOptions.IgnoreCase)}");
+            //Console.WriteLine($"Response {Regex.Replace(responseApdu.SW2.ToString("X2", CultureInfo.InvariantCulture), "-", string.Empty, RegexOptions.IgnoreCase)}");
+
             if (responseApdu.SW != SWConstants.Success)
             {
                 throw new ApduException(

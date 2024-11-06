@@ -137,6 +137,9 @@ namespace Yubico.YubiKey.Fido2.Commands
         /// <c>authProtocol</c>, use the constructor that takes only the
         /// <c>subCommand</c>.
         /// </remarks>
+        /// <param name="device">
+        /// Targetted device, can be used to modify the command for specific cases
+        /// </param>
         /// <param name="subCommand">
         /// The byte representing the subcommand to execute.
         /// </param>
@@ -152,6 +155,7 @@ namespace Yubico.YubiKey.Fido2.Commands
         /// The Auth Protocol used to build the Auth Token.
         /// </param>
         public ConfigCommand(
+            IYubiKeyDevice device,
             int subCommand,
             byte[]? subCommandParams,
             ReadOnlyMemory<byte> pinUvAuthToken,
@@ -160,6 +164,11 @@ namespace Yubico.YubiKey.Fido2.Commands
             if (authProtocol is null)
             {
                 throw new ArgumentNullException(nameof(authProtocol));
+            }
+
+            if (device is null)
+            {
+                throw new ArgumentNullException(nameof(device));
             }
 
             SubCommand = subCommand;
@@ -180,7 +189,7 @@ namespace Yubico.YubiKey.Fido2.Commands
             // The pinUvAuthToken is an encrypted value, so there's no need to
             // overwrite the array.
             byte[] authParam = authProtocol.AuthenticateUsingPinToken(pinUvAuthToken.ToArray(), message);
-            PinUvAuthParam = new ReadOnlyMemory<byte>(authParam, 0, 16);
+            PinUvAuthParam = new ReadOnlyMemory<byte>(authParam, 0, device.PinUvAuthParamLength);
             PinUvAuthProtocol = authProtocol.Protocol;
         }
 

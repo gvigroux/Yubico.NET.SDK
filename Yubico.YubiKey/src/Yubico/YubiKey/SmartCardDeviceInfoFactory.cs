@@ -20,6 +20,7 @@ using Yubico.Core.Devices.SmartCard;
 using Yubico.Core.Logging;
 using Yubico.YubiKey.DeviceExtensions;
 using Yubico.YubiKey.Management.Commands;
+using Yubico.YubiKey.Piv.Commands;
 
 namespace Yubico.YubiKey
 {
@@ -30,7 +31,7 @@ namespace Yubico.YubiKey
         {
             var log = Log.GetLogger(typeof(SmartCardDeviceInfoFactory).FullName!);
 
-            if (!device.IsYubicoDevice())
+            if (!device.IsYubicoDevice() && !device.IsThaleDevice())
             {
                 throw new ArgumentException(ExceptionMessages.InvalidDeviceNotYubico, nameof(device));
             }
@@ -91,6 +92,25 @@ namespace Yubico.YubiKey
 
             try
             {
+                if( device.IsThaleDevice() )
+                {
+                    byte[] a = { 0xA0, 0x00, 0x00, 0x00, 0x03, 0x00, 0x00, 0x00 };
+                    using var connection2 = new SmartCardConnection(device, a);
+                    var response = connection2.SendCommand(new GetThalesSerialNumberCommand());
+                    deviceInfo = new YubiKeyDeviceInfo();
+                    if (response.Status == ResponseStatus.Success)
+                    {
+                        deviceInfo.SerialNumber = response.GetData();
+                        log.LogInformation("SerialNumber : {SerialNumber}", deviceInfo.SerialNumber);
+                        return true;
+                    }
+                    return false;
+                }
+
+
+
+
+
                 log.LogInformation("Attempting to read device info via the management application.");
                 using var connection = new SmartCardConnection(device, YubiKeyApplication.Management);
 

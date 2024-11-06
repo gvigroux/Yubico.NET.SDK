@@ -36,6 +36,20 @@ namespace Yubico.YubiKey.DeviceExtensions
 
             return false;
         }
+        public static bool IsThaleDevice(this ISmartCardDevice device)
+        {
+            try
+            {
+                return ProductAtrs.AllThalesKeys.Contains(device.Atr!);
+            }
+            catch (PlatformInterop.SCardException e)
+            {
+                Log.GetLogger(typeof(ISmartCardDeviceExtension).FullName!)
+                    .LogWarning(e, "Exception encountered when attempting to read device ATR.");
+            }
+
+            return false;
+        }
 
         // Assumes that YubiKeys connected over USB will have a reader name that contains "YubiKey".
         // When connected over NFC, the reader is a third-party device and will not contain "YubiKey".

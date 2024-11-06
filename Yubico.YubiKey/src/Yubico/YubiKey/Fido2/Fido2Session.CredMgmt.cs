@@ -80,7 +80,7 @@ namespace Yubico.YubiKey.Fido2
         /// <exception cref="System.Security.SecurityException">
         /// The PIN retry count was exhausted.
         /// </exception>
-        public (int discoverableCredentialCount, int remainingCredentialCount) GetCredentialMetadata()
+        public (int discoverableCredentialCount, int remainingCredentialCount) GetCredentialMetadata(IYubiKeyDevice device)
         {
             _log.LogInformation("Get credential metadata.");
 
@@ -89,11 +89,11 @@ namespace Yubico.YubiKey.Fido2
             var currentToken = GetAuthToken(
                 false, PinUvAuthTokenPermissions.CredentialManagement, null);
 
-            var command = new GetCredentialMetadataCommand(currentToken, AuthProtocol)
+            var command = new GetCredentialMetadataCommand(currentToken, AuthProtocol, device)
             {
                 IsPreview = isPreview
             };
-            
+
             var response = Connection.SendCommand(command);
 
             // If the error is PinAuthInvalid, try again.
@@ -122,7 +122,7 @@ namespace Yubico.YubiKey.Fido2
                 try
                 {
                     currentToken = GetAuthToken(true, PinUvAuthTokenPermissions.CredentialManagement, null);
-                    command = new GetCredentialMetadataCommand(currentToken, AuthProtocol)
+                    command = new GetCredentialMetadataCommand(currentToken, AuthProtocol, device)
                     {
                         IsPreview = isPreview
                     };
@@ -175,7 +175,7 @@ namespace Yubico.YubiKey.Fido2
         /// <exception cref="System.Security.SecurityException">
         /// The PIN retry count was exhausted.
         /// </exception>
-        public IReadOnlyList<RelyingParty> EnumerateRelyingParties()
+        public IReadOnlyList<RelyingParty> EnumerateRelyingParties(IYubiKeyDevice device)
         {
             _log.LogInformation("Enumerate relying parties.");
 
@@ -184,7 +184,7 @@ namespace Yubico.YubiKey.Fido2
             var currentToken = GetAuthToken(
                 false, PinUvAuthTokenPermissions.CredentialManagement, null);
 
-            var command = new EnumerateRpsBeginCommand(currentToken, AuthProtocol)
+            var command = new EnumerateRpsBeginCommand(currentToken, AuthProtocol, device)
             {
                 IsPreview = isPreview
             };
@@ -217,7 +217,7 @@ namespace Yubico.YubiKey.Fido2
                 try
                 {
                     currentToken = GetAuthToken(true, PinUvAuthTokenPermissions.CredentialManagement, null);
-                    command = new EnumerateRpsBeginCommand(currentToken, AuthProtocol)
+                    command = new EnumerateRpsBeginCommand(currentToken, AuthProtocol, device)
                     {
                         IsPreview = isPreview
                     };
@@ -289,6 +289,7 @@ namespace Yubico.YubiKey.Fido2
         /// <param name="relyingParty">
         /// The relying party for which the list of credentials is requested.
         /// </param>
+        /// <param name="device"></param>
         /// <returns>
         /// A list of <c>CredentialUserInfo</c> objects, one for each
         /// credential.
@@ -303,7 +304,7 @@ namespace Yubico.YubiKey.Fido2
         /// <exception cref="System.Security.SecurityException">
         /// The PIN retry count was exhausted.
         /// </exception>
-        public IReadOnlyList<CredentialUserInfo> EnumerateCredentialsForRelyingParty(RelyingParty relyingParty)
+        public IReadOnlyList<CredentialUserInfo> EnumerateCredentialsForRelyingParty(RelyingParty relyingParty, IYubiKeyDevice device)
         {
             if (relyingParty is null)
             {
@@ -322,7 +323,7 @@ namespace Yubico.YubiKey.Fido2
             byte[] utf = Encoding.UTF8.GetBytes(relyingParty.Id);
             byte[] digest = digester.ComputeHash(utf);
 
-            var command = new EnumerateCredentialsBeginCommand(relyingParty, currentToken, AuthProtocol)
+            var command = new EnumerateCredentialsBeginCommand(relyingParty, currentToken, AuthProtocol, device)
             {
                 IsPreview = isPreview
             };
@@ -347,7 +348,7 @@ namespace Yubico.YubiKey.Fido2
                     AuthTokenRelyingPartyId = relyingParty.Id;
                 }
                 currentToken = GetAuthToken(true, PinUvAuthTokenPermissions.CredentialManagement, null);
-                command = new EnumerateCredentialsBeginCommand(relyingParty, currentToken, AuthProtocol)
+                command = new EnumerateCredentialsBeginCommand(relyingParty, currentToken, AuthProtocol, device)
                 {
                     IsPreview = isPreview
                 };
@@ -401,6 +402,7 @@ namespace Yubico.YubiKey.Fido2
         /// <param name="credentialId">
         /// The ID of the credential to delete.
         /// </param>
+        /// <param name="device"></param>
         /// <exception cref="Fido2Exception">
         /// The YubiKey was not able to delete the specified credential.
         /// </exception>
@@ -414,7 +416,7 @@ namespace Yubico.YubiKey.Fido2
         /// <exception cref="System.Security.SecurityException">
         /// The PIN retry count was exhausted.
         /// </exception>
-        public void DeleteCredential(CredentialId credentialId)
+        public void DeleteCredential(CredentialId credentialId, IYubiKeyDevice device)
         {
             _log.LogInformation("Delete credential.");
 
@@ -423,7 +425,7 @@ namespace Yubico.YubiKey.Fido2
             var currentToken = GetAuthToken(
                 false, PinUvAuthTokenPermissions.CredentialManagement, null);
 
-            var command = new DeleteCredentialCommand(credentialId, currentToken, AuthProtocol)
+            var command = new DeleteCredentialCommand(credentialId, currentToken, AuthProtocol, device)
             {
                 IsPreview = isPreview
             };
@@ -435,7 +437,7 @@ namespace Yubico.YubiKey.Fido2
             if (response.CtapStatus == CtapStatus.PinAuthInvalid)
             {
                 currentToken = GetAuthToken(true, PinUvAuthTokenPermissions.CredentialManagement, null);
-                command = new DeleteCredentialCommand(credentialId, currentToken, AuthProtocol)
+                command = new DeleteCredentialCommand(credentialId, currentToken, AuthProtocol, device)
                 {
                     IsPreview = isPreview
                 };
@@ -485,6 +487,7 @@ namespace Yubico.YubiKey.Fido2
         /// An object containing the information that will replace the currently
         /// stored info.
         /// </param>
+        /// <param name="device"></param>
         /// <exception cref="Fido2Exception">
         /// There was no credential with the given ID.
         /// </exception>
@@ -498,14 +501,14 @@ namespace Yubico.YubiKey.Fido2
         /// <exception cref="System.Security.SecurityException">
         /// The PIN retry count was exhausted.
         /// </exception>
-        public void UpdateUserInfoForCredential(CredentialId credentialId, UserEntity newUserInfo)
+        public void UpdateUserInfoForCredential(CredentialId credentialId, UserEntity newUserInfo, IYubiKeyDevice device)
         {
             _log.LogInformation("Update user information.");
 
             var currentToken = GetAuthToken(
                 false, PinUvAuthTokenPermissions.CredentialManagement, null);
 
-            var command = new UpdateUserInfoCommand(credentialId, newUserInfo, currentToken, AuthProtocol);
+            var command = new UpdateUserInfoCommand(credentialId, newUserInfo, currentToken, AuthProtocol, device);
             var response = Connection.SendCommand(command);
 
             // If the error is PinAuthInvalid, try again.
@@ -514,7 +517,7 @@ namespace Yubico.YubiKey.Fido2
             if (response.CtapStatus == CtapStatus.PinAuthInvalid)
             {
                 currentToken = GetAuthToken(true, PinUvAuthTokenPermissions.CredentialManagement, null);
-                command = new UpdateUserInfoCommand(credentialId, newUserInfo, currentToken, AuthProtocol);
+                command = new UpdateUserInfoCommand(credentialId, newUserInfo, currentToken, AuthProtocol, device);
                 response = Connection.SendCommand(command);
             }
 

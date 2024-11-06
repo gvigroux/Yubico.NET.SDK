@@ -1354,7 +1354,7 @@ namespace Yubico.YubiKey.Fido2
                         CultureInfo.CurrentCulture,
                         ExceptionMessages.PinTooShort,
                         minPinLengthInCodePoints,
-                        "bytes",
+                        "bytes", 
                         newPin.Length));
             }
 

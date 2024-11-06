@@ -139,6 +139,7 @@ namespace Yubico.YubiKey.Fido2.Commands
         /// the command without that element (i.e., it will be left blank).
         /// </para>
         /// </remarks>
+        /// <param name="device"></param>
         /// <param name="newMinPinLength">
         /// The new PIN length, measured in code points. See the User's Manual
         /// entry on <xref href="TheFido2Pin">the FIDO2 PIN</xref> for more
@@ -164,6 +165,7 @@ namespace Yubico.YubiKey.Fido2.Commands
         /// The Auth Protocol used to build the Auth Token.
         /// </param>
         public SetMinPinLengthCommand(
+            IYubiKeyDevice device,
             int? newMinPinLength,
             IReadOnlyList<string>? relyingPartyIds,
             bool? forceChangePin,
@@ -177,6 +179,7 @@ namespace Yubico.YubiKey.Fido2.Commands
             }
 
             _command = new ConfigCommand(
+                device,
                 SubCmdSetMinPinLength,
                 EncodeParams(newMinPinLength, relyingPartyIds, forceChange),
                 pinUvAuthToken,

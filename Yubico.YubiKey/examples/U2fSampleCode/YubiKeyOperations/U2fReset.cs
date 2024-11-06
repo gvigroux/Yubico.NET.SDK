@@ -141,9 +141,9 @@ namespace Yubico.YubiKey.Sample.U2fSampleCode
 
         private void YubiKeyRemoved(object? sender, YubiKeyDeviceEventArgs eventArgs)
         {
-            int serialNumberRemoved = eventArgs.Device.SerialNumber ?? 0;
+            string serialNumberRemoved = eventArgs.Device.SerialNumber ?? "";
 
-            if (serialNumberRemoved != SerialNumber)
+            if (!serialNumberRemoved.Equals(SerialNumber))
             {
                 SampleMenu.WriteMessage(MessageType.Special, 0, "The YubiKey removed is not the expected YubiKey.");
                 SampleMenu.WriteMessage(MessageType.Title, 0, "expected serial number = " + SerialNumber.ToString(NumberFormatInfo.InvariantInfo));
@@ -157,17 +157,17 @@ namespace Yubico.YubiKey.Sample.U2fSampleCode
 
         private void YubiKeyInserted(object? sender, YubiKeyDeviceEventArgs eventArgs)
         {
-            int serialNumberInserted = eventArgs.Device.SerialNumber ?? 0;
+            string serialNumberInserted = eventArgs.Device.SerialNumber ?? "";
 
-            if (serialNumberInserted != SerialNumber)
+            if (!serialNumberInserted.Equals(SerialNumber))
             {
                 SampleMenu.WriteMessage(MessageType.Special, 0, "The YubiKey inserted is not the expected YubiKey.");
-                SampleMenu.WriteMessage(MessageType.Title, 0, "expected serial number = " + SerialNumber.ToString(NumberFormatInfo.InvariantInfo));
-                SampleMenu.WriteMessage(MessageType.Title, 0, "inserted serial number = " + serialNumberInserted.ToString(NumberFormatInfo.InvariantInfo));
+                SampleMenu.WriteMessage(MessageType.Title, 0, "expected serial number = " + SerialNumber);
+                SampleMenu.WriteMessage(MessageType.Title, 0, "inserted serial number = " + serialNumberInserted);
             }
             else
             {
-                SampleMenu.WriteMessage(MessageType.Title, 0, "inserted serial number = " + serialNumberInserted.ToString(NumberFormatInfo.InvariantInfo));
+                SampleMenu.WriteMessage(MessageType.Title, 0, "inserted serial number = " + serialNumberInserted);
                 _yubiKeyDevice = eventArgs.Device;
             }
         }

@@ -68,7 +68,7 @@ namespace Yubico.YubiKey.Fido2
         /// The YubiKey could not perform the operation, even though enterprise
         /// attestation is supported.
         /// </exception>
-        public bool TryEnableEnterpriseAttestation()
+        public bool TryEnableEnterpriseAttestation(IYubiKeyDevice device)
         {
             _log.LogInformation("Try to EnableEnterpriseAttestation.");
 
@@ -89,12 +89,12 @@ namespace Yubico.YubiKey.Fido2
                 PinUvAuthTokenPermissions.AuthenticatorConfiguration,
                 null);
 
-            var command = new EnableEnterpriseAttestationCommand(currentToken, AuthProtocol);
+            var command = new EnableEnterpriseAttestationCommand(device, currentToken, AuthProtocol);
             var response = Connection.SendCommand(command);
             if (response.CtapStatus == CtapStatus.PinAuthInvalid)
             {
                 currentToken = GetAuthToken(true, PinUvAuthTokenPermissions.AuthenticatorConfiguration, null);
-                command = new EnableEnterpriseAttestationCommand(currentToken, AuthProtocol);
+                command = new EnableEnterpriseAttestationCommand(device, currentToken, AuthProtocol);
                 response = Connection.SendCommand(command);
             }
 
@@ -160,7 +160,7 @@ namespace Yubico.YubiKey.Fido2
         /// The YubiKey could not perform the operation, even though the always
         /// UV toggle feature is supported.
         /// </exception>
-        public bool TryToggleAlwaysUv()
+        public bool TryToggleAlwaysUv(IYubiKeyDevice device)
         {
             _log.LogInformation("Try to ToggleAlwaysUv.");
 
@@ -175,12 +175,12 @@ namespace Yubico.YubiKey.Fido2
                 PinUvAuthTokenPermissions.AuthenticatorConfiguration,
                 null);
 
-            var command = new ToggleAlwaysUvCommand(currentToken, AuthProtocol);
+            var command = new ToggleAlwaysUvCommand(device, currentToken, AuthProtocol);
             var response = Connection.SendCommand(command);
             if (response.CtapStatus == CtapStatus.PinAuthInvalid)
             {
                 currentToken = GetAuthToken(true, PinUvAuthTokenPermissions.AuthenticatorConfiguration, null);
-                command = new ToggleAlwaysUvCommand(currentToken, AuthProtocol);
+                command = new ToggleAlwaysUvCommand(device, currentToken, AuthProtocol);
                 response = Connection.SendCommand(command);
             }
 
@@ -290,6 +290,7 @@ namespace Yubico.YubiKey.Fido2
         /// will do nothing.
         /// </para>
         /// </remarks>
+        /// <param name="device"></param>
         /// <param name="newMinPinLength">
         /// The new PIN length, measured in code points. See the User's Manual
         /// entry on <xref href="TheFido2Pin">the FIDO2 PIN</xref> for more
@@ -317,7 +318,7 @@ namespace Yubico.YubiKey.Fido2
         /// PIN length feature is supported. For example, if the input
         /// newMinPinLength arg is less than the current min PIN length.
         /// </exception>
-        public bool TrySetPinConfig(
+        public bool TrySetPinConfig(IYubiKeyDevice device,
             int? newMinPinLength = null,
             IReadOnlyList<string>? relyingPartyIds = null,
             bool? forceChangePin = null)
@@ -337,6 +338,7 @@ namespace Yubico.YubiKey.Fido2
                 null);
 
             var setCmd = new SetMinPinLengthCommand(
+                device,
                 newMinPinLength,
                 relyingPartyIds,
                 forceChangePin,
@@ -347,6 +349,7 @@ namespace Yubico.YubiKey.Fido2
             {
                 currentToken = GetAuthToken(true, PinUvAuthTokenPermissions.AuthenticatorConfiguration, null);
                 setCmd = new SetMinPinLengthCommand(
+                    device,
                     newMinPinLength,
                     relyingPartyIds,
                     forceChangePin,

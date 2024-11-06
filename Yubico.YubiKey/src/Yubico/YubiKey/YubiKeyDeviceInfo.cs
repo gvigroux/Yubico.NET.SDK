@@ -104,6 +104,8 @@ namespace Yubico.YubiKey
         /// <inheritdoc />
         public bool IsPinComplexityEnabled { get; set; }
 
+        public int PinUvAuthParamLength { get; set; } = 16;
+
         /// <summary>
         /// Constructs a default instance of YubiKeyDeviceInfo.
         /// </summary>

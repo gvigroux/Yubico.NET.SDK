@@ -25,17 +25,17 @@ namespace Yubico.YubiKey.Fido2.Commands
     /// </summary>
     /// <remarks>
     /// <p>
-    /// This is the partner Response class to <see cref="ThalesSerialNumberCommand"/>.
+    /// This is the partner Response class to <see cref="GetThalesSerialNumberCommand"/>.
     /// </p>
     /// <p>
     /// The data returned is <see cref="FirmwareVersion"/>.
     /// </p>
     /// </remarks>
-    internal class ThalesSerialNumberResponse : Fido2Response, IYubiKeyResponseWithData<string>
+    internal class GetThalesSerialNumberResponse : Fido2Response, IYubiKeyResponseWithData<string>
     {
         private const int expectedResponseLength = 10;
 
-        public ThalesSerialNumberResponse(ResponseApdu responseApdu) :
+        public GetThalesSerialNumberResponse(ResponseApdu responseApdu) :
             base(responseApdu)
         {
 

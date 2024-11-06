@@ -118,7 +118,7 @@ namespace Yubico.YubiKey.Sample.Fido2SampleCode
                     return ChooseYubiKey.RunChooseYubiKey(
                         false,
                         _menuObject,
-                        Transport.HidFido,
+                        Transport.All,
                         ref _yubiKeyChosen);
             }
         }
@@ -129,7 +129,7 @@ namespace Yubico.YubiKey.Sample.Fido2SampleCode
             _chosenByUser = ChooseYubiKey.RunChooseYubiKey(
                 true,
                 _menuObject,
-                Transport.HidFido,
+                Transport.All,
                 ref _yubiKeyChosen);
 
             return _chosenByUser;

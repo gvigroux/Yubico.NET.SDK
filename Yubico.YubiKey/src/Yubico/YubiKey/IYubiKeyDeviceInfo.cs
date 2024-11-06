@@ -156,5 +156,10 @@ namespace Yubico.YubiKey
         /// <a href="https://docs.yubico.com/hardware/yubikey/yk-tech-manual/5.7-firmware-specifics.html#pin-complexity">this documentation on pin complexity</a> 
         /// </summary>
         bool IsPinComplexityEnabled { get; }
+
+        /// <summary>
+        /// In CTAP 2.1 and depending on implementations, the Length of this parameter can be 16 or 32
+       /// </summary>
+        int PinUvAuthParamLength { get; } 
     }
 }

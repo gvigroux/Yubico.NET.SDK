@@ -49,6 +49,7 @@ namespace Yubico.YubiKey.Fido2.Commands
         /// <summary>
         /// Constructs a new instance of <see cref="ToggleAlwaysUvCommand"/>.
         /// </summary>
+        /// <param name="device"></param>
         /// <param name="pinUvAuthToken">
         /// The PIN/UV Auth Token built from the PIN. This is the encrypted token
         /// key.
@@ -57,11 +58,12 @@ namespace Yubico.YubiKey.Fido2.Commands
         /// The Auth Protocol used to build the Auth Token.
         /// </param>
         public ToggleAlwaysUvCommand(
+            IYubiKeyDevice device,
             ReadOnlyMemory<byte> pinUvAuthToken,
             PinUvAuthProtocolBase authProtocol)
         {
             _command = new ConfigCommand(
-                SubCmdToggleAlwaysUv, null, pinUvAuthToken, authProtocol);
+                device, SubCmdToggleAlwaysUv, null, pinUvAuthToken, authProtocol);
         }
 
         /// <inheritdoc />

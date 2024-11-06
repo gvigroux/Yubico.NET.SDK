@@ -390,7 +390,7 @@ namespace Yubico.YubiKey
             {
                 return SmartCardDevice
                         .GetSmartCardDevices()
-                        .Where(d => d.IsYubicoDevice());
+                        .Where(d => d.IsYubicoDevice() || d.IsThaleDevice());
             }
             catch (PlatformInterop.SCardException e) { ErrorHandler(e); }
 
