@@ -77,7 +77,7 @@ Actual:   0*/
             {
                 fido2Session.KeyCollector = LocalKeyCollector;
 
-                IReadOnlyList<RelyingParty> rpList = fido2Session.EnumerateRelyingParties();
+                IReadOnlyList<RelyingParty> rpList = fido2Session.EnumerateRelyingParties(Device);
                 IReadOnlyList<CredentialUserInfo> credList =
                     fido2Session.EnumerateCredentialsForRelyingParty(rpList[0]);
                 int count = credList.Count;

@@ -69,7 +69,7 @@ namespace Yubico.YubiKey.Sample.U2fSampleCode
         }
 
         // Reset the U2F application for the YubiKey with the given serial number.
-        public static bool RunReset(int? serialNumber, Func<KeyEntryData, bool> KeyCollectorDelegate)
+        public static bool RunReset(string serialNumber, Func<KeyEntryData, bool> KeyCollectorDelegate)
         {
             // To reset the U2F application, one must call the reset command
             // within a short time limit after the YubiKey has been "rebooted".

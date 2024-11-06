@@ -58,12 +58,12 @@ namespace Yubico.YubiKey.Fido2.Commands
         /// The Auth Protocol used to build the Auth Token.
         /// </param>
         public EnableEnterpriseAttestationCommand(
-            IYubiKeyDevice device,
             ReadOnlyMemory<byte> pinUvAuthToken,
-            PinUvAuthProtocolBase authProtocol)
+            PinUvAuthProtocolBase authProtocol,
+            IYubiKeyDevice? device = null)
         {
             _command = new ConfigCommand(
-                device, SubCmdEnableEnterpriseAttestation, null, pinUvAuthToken, authProtocol);
+                SubCmdEnableEnterpriseAttestation, null, pinUvAuthToken, authProtocol, device);
         }
 
         /// <inheritdoc />

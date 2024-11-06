@@ -76,7 +76,7 @@ namespace Yubico.YubiKey
         {
             var ykDeviceInfo = new YubiKeyDeviceInfo()
             {
-                SerialNumber = 12345678,
+                SerialNumber = "12345678",
             };
 
             var ykDevice = new YubiKeyDevice(null, null, null, ykDeviceInfo);

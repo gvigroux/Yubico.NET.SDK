@@ -327,7 +327,7 @@ namespace Yubico.YubiKey.Sample.U2fSampleCode
 
             SampleMenu.WriteMessage(MessageType.Title, 0, "This is the YubiKey for which the U2F application will be reset.\n");
 
-            int? serial = _yubiKeyChosen.SerialNumber;
+            string serial = _yubiKeyChosen.SerialNumber;
             if (serial is null)
             {
                 SampleMenu.WriteMessage(MessageType.Title, 0, "Unknown serial number : version = " + versionNumber);

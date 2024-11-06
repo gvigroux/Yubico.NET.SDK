@@ -47,14 +47,14 @@ Expected: Success
 Actual:   Failed*/
             ReadOnlyMemory<byte> pinToken = getTokenRsp.GetData();
 
-            var cmd = new EnumerateRpsBeginCommand(pinToken, protocol);
+            var cmd = new EnumerateRpsBeginCommand(pinToken, protocol, null);
             EnumerateRpsBeginResponse rsp = Connection.SendCommand(cmd);
             Assert.Equal(ResponseStatus.Success, rsp.Status);
 
             (int rpCount, RelyingParty firstRp) = rsp.GetData();
             Assert.True(rpCount != 0);
 
-            var credCmd = new EnumerateCredentialsBeginCommand(firstRp, pinToken, protocol);
+            var credCmd = new EnumerateCredentialsBeginCommand(firstRp, pinToken, protocol, null);
             EnumerateCredentialsBeginResponse credRsp = Connection.SendCommand(credCmd);
             Assert.Equal(ResponseStatus.Success, credRsp.Status);
 

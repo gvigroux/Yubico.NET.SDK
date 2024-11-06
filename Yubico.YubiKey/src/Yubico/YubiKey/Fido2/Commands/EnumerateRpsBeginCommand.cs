@@ -62,8 +62,8 @@ namespace Yubico.YubiKey.Fido2.Commands
         /// </param>
         /// <param name="device"></param>
         public EnumerateRpsBeginCommand(
-            ReadOnlyMemory<byte> pinUvAuthToken, PinUvAuthProtocolBase authProtocol,
-            IYubiKeyDevice device)
+            ReadOnlyMemory<byte> pinUvAuthToken, PinUvAuthProtocolBase authProtocol, IYubiKeyDevice? device = null
+            )
             : base(new CredentialManagementCommand(SubCmdEnumerateRpsBegin, null, pinUvAuthToken, authProtocol, device))
         {
         }

@@ -63,11 +63,11 @@ namespace Yubico.YubiKey.TestUtilities
         // object will use the default key collector. Otherwise, pass in the
         // alternate key collector you want this object to use.
         public Fido2ResetForTest(
-            int? serialNumber,
+            string? serialNumber,
             ReadOnlyMemory<byte>? newPin = null,
             Func<KeyEntryData, bool>? keyCollector = null)
         {
-            SerialNumber = serialNumber ?? 0;
+            SerialNumber = serialNumber ?? "";
             if (newPin is null)
             {
                 _pin = Encoding.UTF8.GetBytes("123456");
@@ -90,7 +90,7 @@ namespace Yubico.YubiKey.TestUtilities
 
         // Set the serial number using this property. If there is no serial
         // number (the actual YubiKey's serial number is null), this will be 0.
-        private int SerialNumber { get; }
+        private string SerialNumber { get; }
 
         public Func<KeyEntryData, bool> KeyCollector { get; }
 
@@ -259,9 +259,9 @@ namespace Yubico.YubiKey.TestUtilities
 
         private void YubiKeyRemoved(object? sender, YubiKeyDeviceEventArgs eventArgs)
         {
-            int serialNumberRemoved = eventArgs.Device.SerialNumber ?? 0;
+            string serialNumberRemoved = eventArgs.Device.SerialNumber ?? "";
 
-            if (serialNumberRemoved != SerialNumber)
+            if (!serialNumberRemoved.Equals(SerialNumber))
             {
                 WriteMessageBox("The YubiKey removed is not the expected YubiKey." +
                                 "\nexpected serial number = " + SerialNumber.ToString(NumberFormatInfo.InvariantInfo) +
@@ -277,9 +277,9 @@ namespace Yubico.YubiKey.TestUtilities
 
         private void YubiKeyInserted(object? sender, YubiKeyDeviceEventArgs eventArgs)
         {
-            int serialNumberInserted = eventArgs.Device.SerialNumber ?? 0;
+            string serialNumberInserted = eventArgs.Device.SerialNumber ?? "";
 
-            if (serialNumberInserted != SerialNumber)
+            if (!serialNumberInserted.Equals(SerialNumber))
             {
                 WriteMessageBox("The YubiKey inserted is not the expected YubiKey." +
                                 "\nexpected serial number = " + SerialNumber.ToString(NumberFormatInfo.InvariantInfo) +
@@ -340,9 +340,9 @@ namespace Yubico.YubiKey.TestUtilities
         /// </summary>
         /// <param name="serialNum"></param>
         /// <returns></returns>
-        public static bool DoReset(int? serialNum)
+        public static bool DoReset(string? serialNumber)
         {
-            var fido2Reset = new Fido2ResetForTest(serialNum);
+            var fido2Reset = new Fido2ResetForTest(serialNumber);
             ResponseStatus status = fido2Reset.RunFido2Reset();
 
             return status == ResponseStatus.Success;

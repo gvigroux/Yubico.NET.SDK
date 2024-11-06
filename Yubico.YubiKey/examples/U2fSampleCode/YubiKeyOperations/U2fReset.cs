@@ -28,14 +28,14 @@ namespace Yubico.YubiKey.Sample.U2fSampleCode
         private const int ReinsertTimeoutSeconds = 10;
         private readonly string ReinsertTimeoutString = ReinsertTimeoutSeconds.ToString(NumberFormatInfo.InvariantInfo);
 
-        private int? _serialNumber;
+        private string? _serialNumber;
         private IYubiKeyDevice? _yubiKeyDevice;
 
         // Set the serial number using this property. If there is no serial
         // number (the actual YubiKey's serial number is null), this will be 0.
-        public int SerialNumber
+        public string SerialNumber
         {
-            get => _serialNumber ?? 0;
+            get => _serialNumber ?? "";
             set => _serialNumber = value;
         }
 
@@ -45,7 +45,7 @@ namespace Yubico.YubiKey.Sample.U2fSampleCode
 
         // Create a new instance that will be able to reset the YubiKey with the
         // given serial number.
-        public U2fReset(int? serialNumber)
+        public U2fReset(string? serialNumber)
         {
             _serialNumber = serialNumber;
         }
@@ -143,7 +143,7 @@ namespace Yubico.YubiKey.Sample.U2fSampleCode
         {
             string serialNumberRemoved = eventArgs.Device.SerialNumber ?? "";
 
-            if (!serialNumberRemoved.Equals(SerialNumber))
+            if (!serialNumberRemoved.Equals(SerialNumber, StringComparison.OrdinalIgnoreCase))
             {
                 SampleMenu.WriteMessage(MessageType.Special, 0, "The YubiKey removed is not the expected YubiKey.");
                 SampleMenu.WriteMessage(MessageType.Title, 0, "expected serial number = " + SerialNumber.ToString(NumberFormatInfo.InvariantInfo));
@@ -159,7 +159,7 @@ namespace Yubico.YubiKey.Sample.U2fSampleCode
         {
             string serialNumberInserted = eventArgs.Device.SerialNumber ?? "";
 
-            if (!serialNumberInserted.Equals(SerialNumber))
+            if (!serialNumberInserted.Equals(SerialNumber, StringComparison.OrdinalIgnoreCase))
             {
                 SampleMenu.WriteMessage(MessageType.Special, 0, "The YubiKey inserted is not the expected YubiKey.");
                 SampleMenu.WriteMessage(MessageType.Title, 0, "expected serial number = " + SerialNumber);

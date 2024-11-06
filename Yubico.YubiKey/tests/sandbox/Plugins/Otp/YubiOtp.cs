@@ -291,7 +291,7 @@ namespace Yubico.YubiKey.TestApp.Plugins.Otp
             string json = JsonSerializer.Serialize(new
             {
                 aes_key = Base16.EncodeBytes(_key),
-                serial = (_serialNumber ?? 0).ToString(),
+                serial = (_serialNumber ?? "").ToString(),
                 public_id = ModHex.EncodeBytes(_publicId),
                 private_id = Base16.EncodeBytes(_privateId)
             });

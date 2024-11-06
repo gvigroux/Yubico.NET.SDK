@@ -79,8 +79,8 @@ namespace Yubico.YubiKey.TestApp.Plugins.Otp
             if (_yubiKey is null && exceptions.Count == 0)
             {
                 Output.WriteLine(
-                    _serialNumber.HasValue
-                        ? $"Touch YubiKey with serial number {_serialNumber.Value} to NFC reader."
+                    _serialNumber != null
+                        ? $"Touch YubiKey with serial number {_serialNumber} to NFC reader."
                         : "Touch YubiKey to NFC reader.",
                     OutputLevel.Quiet);
                 var timer = Stopwatch.StartNew();

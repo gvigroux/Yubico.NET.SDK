@@ -162,15 +162,17 @@ namespace Yubico.YubiKey.Fido2.Commands
         /// <param name="device"></param>
         public CredentialManagementCommand(
             int subCommand, byte[]? subCommandParams,
-            ReadOnlyMemory<byte> pinUvAuthToken, PinUvAuthProtocolBase authProtocol, IYubiKeyDevice device)
+            ReadOnlyMemory<byte> pinUvAuthToken, PinUvAuthProtocolBase authProtocol, IYubiKeyDevice? device)
         {
             if (authProtocol is null)
             {
                 throw new ArgumentNullException(nameof(authProtocol));
             }
-            if (device == null)
+
+            int pinUvAuthParamLength = 16;
+            if (device != null)
             {
-                throw new ArgumentNullException(nameof(device));
+                pinUvAuthParamLength = device.PinUvAuthParamLength;
             }
 
             SubCommand = subCommand;
@@ -189,7 +191,7 @@ namespace Yubico.YubiKey.Fido2.Commands
             // The pinUvAuthToken is an encrypted value, so there's no need to
             // overwrite the array.
             byte[] authParam = authProtocol.AuthenticateUsingPinToken(pinUvAuthToken.ToArray(), message);
-            PinUvAuthParam = new ReadOnlyMemory<byte>(authParam, 0, device.PinUvAuthParamLength);
+            PinUvAuthParam = new ReadOnlyMemory<byte>(authParam, 0, pinUvAuthParamLength);
             PinUvAuthProtocol = authProtocol.Protocol;
         }
 

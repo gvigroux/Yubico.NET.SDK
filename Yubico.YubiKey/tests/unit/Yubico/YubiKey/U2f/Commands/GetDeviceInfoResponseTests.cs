@@ -129,7 +129,7 @@ namespace Yubico.YubiKey.U2f.Commands
             var deviceInfo = YubiKeyDeviceInfo.CreateFromResponseData(getDeviceInfoResponse.GetData());
 
 
-            Assert.Equal(0x01020304, deviceInfo.SerialNumber);
+            Assert.Equal("01020304", deviceInfo.SerialNumber);
         }
 
         [Fact]

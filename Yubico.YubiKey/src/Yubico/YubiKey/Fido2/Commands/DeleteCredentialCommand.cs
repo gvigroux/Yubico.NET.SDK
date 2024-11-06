@@ -62,7 +62,7 @@ namespace Yubico.YubiKey.Fido2.Commands
             CredentialId credentialId,
             ReadOnlyMemory<byte> pinUvAuthToken,
             PinUvAuthProtocolBase authProtocol,
-            IYubiKeyDevice device)
+            IYubiKeyDevice? device = null)
             : base(new CredentialManagementCommand(
             SubCmdDeleteCredential, EncodeParams(credentialId), pinUvAuthToken, authProtocol, device))
         {

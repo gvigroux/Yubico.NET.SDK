@@ -80,7 +80,7 @@ namespace Yubico.YubiKey.Fido2
         /// <exception cref="System.Security.SecurityException">
         /// The PIN retry count was exhausted.
         /// </exception>
-        public (int discoverableCredentialCount, int remainingCredentialCount) GetCredentialMetadata(IYubiKeyDevice device)
+        public (int discoverableCredentialCount, int remainingCredentialCount) GetCredentialMetadata(IYubiKeyDevice? device = null)
         {
             _log.LogInformation("Get credential metadata.");
 
@@ -175,7 +175,7 @@ namespace Yubico.YubiKey.Fido2
         /// <exception cref="System.Security.SecurityException">
         /// The PIN retry count was exhausted.
         /// </exception>
-        public IReadOnlyList<RelyingParty> EnumerateRelyingParties(IYubiKeyDevice device)
+        public IReadOnlyList<RelyingParty> EnumerateRelyingParties(IYubiKeyDevice? device = null)
         {
             _log.LogInformation("Enumerate relying parties.");
 
@@ -304,7 +304,7 @@ namespace Yubico.YubiKey.Fido2
         /// <exception cref="System.Security.SecurityException">
         /// The PIN retry count was exhausted.
         /// </exception>
-        public IReadOnlyList<CredentialUserInfo> EnumerateCredentialsForRelyingParty(RelyingParty relyingParty, IYubiKeyDevice device)
+        public IReadOnlyList<CredentialUserInfo> EnumerateCredentialsForRelyingParty(RelyingParty relyingParty, IYubiKeyDevice? device = null)
         {
             if (relyingParty is null)
             {
@@ -416,7 +416,7 @@ namespace Yubico.YubiKey.Fido2
         /// <exception cref="System.Security.SecurityException">
         /// The PIN retry count was exhausted.
         /// </exception>
-        public void DeleteCredential(CredentialId credentialId, IYubiKeyDevice device)
+        public void DeleteCredential(CredentialId credentialId, IYubiKeyDevice? device = null)
         {
             _log.LogInformation("Delete credential.");
 
@@ -501,7 +501,7 @@ namespace Yubico.YubiKey.Fido2
         /// <exception cref="System.Security.SecurityException">
         /// The PIN retry count was exhausted.
         /// </exception>
-        public void UpdateUserInfoForCredential(CredentialId credentialId, UserEntity newUserInfo, IYubiKeyDevice device)
+        public void UpdateUserInfoForCredential(CredentialId credentialId, UserEntity newUserInfo, IYubiKeyDevice? device = null)
         {
             _log.LogInformation("Update user information.");
 

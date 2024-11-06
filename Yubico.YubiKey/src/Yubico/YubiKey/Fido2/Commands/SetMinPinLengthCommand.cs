@@ -165,12 +165,12 @@ namespace Yubico.YubiKey.Fido2.Commands
         /// The Auth Protocol used to build the Auth Token.
         /// </param>
         public SetMinPinLengthCommand(
-            IYubiKeyDevice device,
             int? newMinPinLength,
             IReadOnlyList<string>? relyingPartyIds,
             bool? forceChangePin,
             ReadOnlyMemory<byte> pinUvAuthToken,
-            PinUvAuthProtocolBase authProtocol)
+            PinUvAuthProtocolBase authProtocol,
+            IYubiKeyDevice? device = null)
         {
             bool? forceChange = null;
             if (!(forceChangePin is null) && forceChangePin.Value)
@@ -179,11 +179,11 @@ namespace Yubico.YubiKey.Fido2.Commands
             }
 
             _command = new ConfigCommand(
-                device,
                 SubCmdSetMinPinLength,
                 EncodeParams(newMinPinLength, relyingPartyIds, forceChange),
                 pinUvAuthToken,
-                authProtocol);
+                authProtocol,
+                device);
         }
 
         /// <inheritdoc />

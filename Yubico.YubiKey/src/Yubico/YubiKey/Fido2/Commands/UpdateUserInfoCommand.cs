@@ -82,7 +82,7 @@ namespace Yubico.YubiKey.Fido2.Commands
             UserEntity userEntity,
             ReadOnlyMemory<byte> pinUvAuthToken,
             PinUvAuthProtocolBase authProtocol,
-            IYubiKeyDevice device)
+            IYubiKeyDevice? device = null)
         {
             _command = new CredentialManagementCommand(
                 SubCmdUpdateUserInfo, EncodeParams(credentialId, userEntity), pinUvAuthToken, authProtocol, device);

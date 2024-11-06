@@ -381,7 +381,7 @@ namespace Yubico.YubiKey.TestApp.Plugins.Otp
 
             // Setting up the protected fields that plug-ins inheriting from this
             // base class will use.
-            _serialNumber = (int?)GetParameter("serial-number");
+            _serialNumber = ((int?)GetParameter("serial-number")).ToString();
             _slot = (Slot?)GetParameter("slot") ?? Slot.None;
             _force = (bool?)GetParameter("force") ?? false;
             _generate = (bool?)GetParameter("generate") ?? false;
@@ -435,14 +435,14 @@ namespace Yubico.YubiKey.TestApp.Plugins.Otp
             return replacement;
         }
 
-        internal static IYubiKeyDevice GetYubiKey(int? serialNumber, Transport transport = Transport.HidKeyboard)
+        internal static IYubiKeyDevice GetYubiKey(string? serialNumber, Transport transport = Transport.HidKeyboard)
         {
             IEnumerable<IYubiKeyDevice> keys = YubiKeyDevice.FindByTransport(transport);
             IYubiKeyDevice key = keys.FirstOrDefault() ?? throw new InvalidOperationException();
-            if (serialNumber.HasValue)
+            if (serialNumber != null)
             {
                 key = keys
-                    .Where(k => k.SerialNumber == serialNumber)
+                    .Where(k => serialNumber.Equals(k.SerialNumber))
                     .FirstOrDefault() ?? throw new InvalidOperationException();
                 if (key is null)
                 {
@@ -521,7 +521,7 @@ namespace Yubico.YubiKey.TestApp.Plugins.Otp
         protected bool _generate;
         protected int _passwordLength;
         protected IYubiKeyDevice? _yubiKey;
-        protected int? _serialNumber;
+        protected string? _serialNumber;
         protected bool _force;
         protected byte[] _currentAccessCode = new byte[SlotConfigureBase.AccessCodeLength];
         protected byte[] _newAccessCode = new byte[SlotConfigureBase.AccessCodeLength];

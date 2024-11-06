@@ -54,7 +54,7 @@ namespace Yubico.YubiKey.Fido2.Commands
         /// <param name="device"></param>
         public GetCredentialMetadataCommand(
             ReadOnlyMemory<byte> pinUvAuthToken, PinUvAuthProtocolBase authProtocol,
-            IYubiKeyDevice device)
+            IYubiKeyDevice? device = null)
             : base(new CredentialManagementCommand(SubCmdGetMetadata, null, pinUvAuthToken, authProtocol, device))
         {
         }

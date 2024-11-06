@@ -174,7 +174,7 @@ namespace Yubico.YubiKey
             YubiKeyCapabilities desiredCapabilities =
                 testDevice.AvailableNfcCapabilities & ~YubiKeyCapabilities.Fido2;
             testDevice.SetEnabledNfcCapabilities(desiredCapabilities);
-            testDevice = TestDeviceSelection.RenewDeviceEnumeration(testDevice.SerialNumber!.Value);
+            testDevice = TestDeviceSelection.RenewDeviceEnumeration(testDevice.SerialNumber!);
 
             Assert.Equal(desiredCapabilities, testDevice.EnabledNfcCapabilities);
         }
@@ -192,14 +192,14 @@ namespace Yubico.YubiKey
             // Enable only Otp USB capabilities
             YubiKeyCapabilities desiredCapabilities = YubiKeyCapabilities.Otp;
             testDevice.SetEnabledUsbCapabilities(desiredCapabilities);
-            testDevice = TestDeviceSelection.RenewDeviceEnumeration(testDevice.SerialNumber!.Value);
+            testDevice = TestDeviceSelection.RenewDeviceEnumeration(testDevice.SerialNumber!);
 
             Assert.Equal(desiredCapabilities, testDevice.EnabledUsbCapabilities);
 
             // Turn on FIDO2
             desiredCapabilities = testDevice.EnabledUsbCapabilities | YubiKeyCapabilities.Fido2;
             testDevice.SetEnabledUsbCapabilities(desiredCapabilities);
-            testDevice = TestDeviceSelection.RenewDeviceEnumeration(testDevice.SerialNumber!.Value);
+            testDevice = TestDeviceSelection.RenewDeviceEnumeration(testDevice.SerialNumber!);
 
             Assert.Equal(desiredCapabilities, testDevice.EnabledUsbCapabilities);
         }
@@ -218,7 +218,7 @@ namespace Yubico.YubiKey
             YubiKeyCapabilities desiredCapabilities =
                 testDevice.AvailableUsbCapabilities & ~YubiKeyCapabilities.Fido2;
             testDevice.SetEnabledUsbCapabilities(desiredCapabilities);
-            testDevice = TestDeviceSelection.RenewDeviceEnumeration(testDevice.SerialNumber!.Value);
+            testDevice = TestDeviceSelection.RenewDeviceEnumeration(testDevice.SerialNumber!);
 
             Assert.Equal(desiredCapabilities, testDevice.EnabledUsbCapabilities);
         }
@@ -235,7 +235,7 @@ namespace Yubico.YubiKey
 
             int expectedTimeout = 255;
             testDevice.SetChallengeResponseTimeout(expectedTimeout);
-            testDevice = TestDeviceSelection.RenewDeviceEnumeration(testDevice.SerialNumber!.Value);
+            testDevice = TestDeviceSelection.RenewDeviceEnumeration(testDevice.SerialNumber!);
 
             Assert.Equal(expectedTimeout, testDevice.ChallengeResponseTimeout);
         }
@@ -253,7 +253,7 @@ namespace Yubico.YubiKey
             int requestedTimeout = 0;
             int expectedTimeout = 15;
             testDevice.SetChallengeResponseTimeout(requestedTimeout);
-            testDevice = TestDeviceSelection.RenewDeviceEnumeration(testDevice.SerialNumber!.Value);
+            testDevice = TestDeviceSelection.RenewDeviceEnumeration(testDevice.SerialNumber!);
 
             Assert.Equal(expectedTimeout, testDevice.ChallengeResponseTimeout);
         }
@@ -276,7 +276,7 @@ namespace Yubico.YubiKey
             // Must enable this flag in order to retrieve value
             testDevice.SetDeviceFlags(DeviceFlags.TouchEject);
 
-            testDevice = TestDeviceSelection.RenewDeviceEnumeration(testDevice.SerialNumber!.Value);
+            testDevice = TestDeviceSelection.RenewDeviceEnumeration(testDevice.SerialNumber!);
 
             Assert.Equal(expectedTimeout, testDevice.AutoEjectTimeout);
         }
@@ -293,7 +293,7 @@ namespace Yubico.YubiKey
 
             DeviceFlags expectedDeviceFlags = DeviceFlags.RemoteWakeup | DeviceFlags.TouchEject;
             testDevice.SetDeviceFlags(expectedDeviceFlags);
-            testDevice = TestDeviceSelection.RenewDeviceEnumeration(testDevice.SerialNumber!.Value);
+            testDevice = TestDeviceSelection.RenewDeviceEnumeration(testDevice.SerialNumber!);
 
             Assert.Equal(expectedDeviceFlags, testDevice.DeviceFlags);
         }
@@ -309,7 +309,7 @@ namespace Yubico.YubiKey
 
             testDevice.LockConfiguration(TestLockCode);
 
-            testDevice = TestDeviceSelection.RenewDeviceEnumeration(testDevice.SerialNumber!.Value);
+            testDevice = TestDeviceSelection.RenewDeviceEnumeration(testDevice.SerialNumber!);
             Assert.True(testDevice.ConfigurationLocked);
         }
 
@@ -326,7 +326,7 @@ namespace Yubico.YubiKey
             testDevice.LockConfiguration(TestLockCode);
 
             // Assert pre-conditions
-            testDevice = TestDeviceSelection.RenewDeviceEnumeration(testDevice.SerialNumber!.Value);
+            testDevice = TestDeviceSelection.RenewDeviceEnumeration(testDevice.SerialNumber!);
             Assert.True(testDevice.ConfigurationLocked);
 
             // Test
@@ -346,13 +346,13 @@ namespace Yubico.YubiKey
             testDevice.LockConfiguration(TestLockCode);
 
             // Assert pre-conditions
-            testDevice = TestDeviceSelection.RenewDeviceEnumeration(testDevice.SerialNumber!.Value);
+            testDevice = TestDeviceSelection.RenewDeviceEnumeration(testDevice.SerialNumber!);
             Assert.True(testDevice.ConfigurationLocked);
 
             // Test
             testDevice.UnlockConfiguration(TestLockCode);
 
-            testDevice = TestDeviceSelection.RenewDeviceEnumeration(testDevice.SerialNumber!.Value);
+            testDevice = TestDeviceSelection.RenewDeviceEnumeration(testDevice.SerialNumber!);
             Assert.False(testDevice.ConfigurationLocked);
         }
 
@@ -368,7 +368,7 @@ namespace Yubico.YubiKey
             testDevice.LockConfiguration(TestLockCode);
 
             // Assert pre-conditions
-            testDevice = TestDeviceSelection.RenewDeviceEnumeration(testDevice.SerialNumber!.Value);
+            testDevice = TestDeviceSelection.RenewDeviceEnumeration(testDevice.SerialNumber!);
             Assert.True(testDevice.ConfigurationLocked);
 
             // Test
@@ -418,7 +418,7 @@ namespace Yubico.YubiKey
             YubiKeyCapabilities desiredCapabilities =
                 YubiKeyCapabilities.Otp | YubiKeyCapabilities.Ccid;
             testDevice.SetLegacyDeviceConfiguration(desiredCapabilities, 0, false);
-            testDevice = TestDeviceSelection.RenewDeviceEnumeration(testDevice.SerialNumber!.Value);
+            testDevice = TestDeviceSelection.RenewDeviceEnumeration(testDevice.SerialNumber!);
 
             Assert.True(testDevice.EnabledUsbCapabilities.HasFlag(
                 YubiKeyCapabilities.Otp | YubiKeyCapabilities.Ccid));
@@ -438,7 +438,7 @@ namespace Yubico.YubiKey
 
             byte expectedTimeout = 255;
             testDevice.SetLegacyDeviceConfiguration(YubiKeyCapabilities.All, expectedTimeout, false);
-            testDevice = TestDeviceSelection.RenewDeviceEnumeration(testDevice.SerialNumber!.Value);
+            testDevice = TestDeviceSelection.RenewDeviceEnumeration(testDevice.SerialNumber!);
 
             Assert.Equal(expectedTimeout, testDevice.ChallengeResponseTimeout);
         }
@@ -457,7 +457,7 @@ namespace Yubico.YubiKey
             byte requestedTimeout = 0;
             byte expectedTimeout = 15;
             testDevice.SetLegacyDeviceConfiguration(YubiKeyCapabilities.All, requestedTimeout, false);
-            testDevice = TestDeviceSelection.RenewDeviceEnumeration(testDevice.SerialNumber!.Value);
+            testDevice = TestDeviceSelection.RenewDeviceEnumeration(testDevice.SerialNumber!);
 
             Assert.Equal(expectedTimeout, testDevice.ChallengeResponseTimeout);
         }
@@ -504,7 +504,7 @@ namespace Yubico.YubiKey
                 throw new InvalidOperationException(response.StatusMessage);
             }
 
-            testDevice = TestDeviceSelection.RenewDeviceEnumeration(testDevice.SerialNumber!.Value);
+            testDevice = TestDeviceSelection.RenewDeviceEnumeration(testDevice.SerialNumber!);
 
             return testDevice;
         }

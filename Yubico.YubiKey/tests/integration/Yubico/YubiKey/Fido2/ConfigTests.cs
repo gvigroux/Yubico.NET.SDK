@@ -37,7 +37,7 @@ namespace Yubico.YubiKey.Fido2
                 fido2Session.KeyCollector = LocalKeyCollector;
 
                 OptionValue optionValue = fido2Session.AuthenticatorInfo.GetOptionValue("ep");
-                bool isSet = fido2Session.TryEnableEnterpriseAttestation();
+                bool isSet = fido2Session.TryEnableEnterpriseAttestation(Device);
 
                 bool shouldSupportEnterpriseAttestation = optionValue == OptionValue.True || optionValue == OptionValue.False;
                 if (shouldSupportEnterpriseAttestation)
@@ -74,7 +74,7 @@ namespace Yubico.YubiKey.Fido2
                     expectedResult = true;
                 }
 
-                bool isSet = fido2Session.TryToggleAlwaysUv();
+                bool isSet = fido2Session.TryToggleAlwaysUv(Device);
 
                 optionValue = fido2Session.AuthenticatorInfo.GetOptionValue("alwaysUv");
                 Assert.Equal(expectedResult, isSet);

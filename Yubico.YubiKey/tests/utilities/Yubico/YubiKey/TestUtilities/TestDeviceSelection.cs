@@ -27,7 +27,7 @@ namespace Yubico.YubiKey.TestUtilities
         /// <exception cref="InvalidOperationException">
         /// Thrown if the test device could not be found.
         /// </exception>
-        public static IYubiKeyDevice RenewDeviceEnumeration(int serialNumber)
+        public static IYubiKeyDevice RenewDeviceEnumeration(string serialNumber)
         {
             const int maxReconnectAttempts = 40;
             const int sleepDuration = 100; //ms

@@ -58,12 +58,12 @@ namespace Yubico.YubiKey.Fido2.Commands
         /// The Auth Protocol used to build the Auth Token.
         /// </param>
         public ToggleAlwaysUvCommand(
-            IYubiKeyDevice device,
             ReadOnlyMemory<byte> pinUvAuthToken,
-            PinUvAuthProtocolBase authProtocol)
+            PinUvAuthProtocolBase authProtocol,
+            IYubiKeyDevice? device = null)
         {
             _command = new ConfigCommand(
-                device, SubCmdToggleAlwaysUv, null, pinUvAuthToken, authProtocol);
+                SubCmdToggleAlwaysUv, null, pinUvAuthToken, authProtocol, device);
         }
 
         /// <inheritdoc />

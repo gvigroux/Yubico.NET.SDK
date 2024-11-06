@@ -67,7 +67,7 @@ namespace Yubico.YubiKey
             {
                 testDevice.SetEnabledUsbCapabilities(YubiKeyCapabilities.All);
                 Thread.Sleep(TimeSpan.FromSeconds(2)); // Give the YubiKey time to reboot and be rediscovered.
-                testDevice = TestDeviceSelection.RenewDeviceEnumeration(testDevice.SerialNumber!.Value);
+                testDevice = TestDeviceSelection.RenewDeviceEnumeration(testDevice.SerialNumber!);
             }
 
             // Run the tests - Keyboard -> SmartCard -> FIDO

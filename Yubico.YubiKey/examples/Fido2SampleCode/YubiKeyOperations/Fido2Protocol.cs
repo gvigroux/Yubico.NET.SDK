@@ -474,7 +474,7 @@ namespace Yubico.YubiKey.Sample.Fido2SampleCode
 
                 // This method will automatically perform any PIN or fingerprint
                 // verification needed.
-                return fido2Session.TrySetPinConfig(yubiKey, newMinPinLength, relyingPartyIds, forceChangePin);
+                return fido2Session.TrySetPinConfig(newMinPinLength, relyingPartyIds, forceChangePin, yubiKey);
             }
         }
 #nullable restore

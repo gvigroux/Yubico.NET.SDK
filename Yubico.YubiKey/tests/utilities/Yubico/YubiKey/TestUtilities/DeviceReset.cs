@@ -89,7 +89,7 @@ namespace Yubico.YubiKey.TestUtilities
         /// </remarks>
         public static IYubiKeyDevice EnableAllCapabilities(IYubiKeyDevice key)
         {
-            int serialNumber =
+            string serialNumber =
                 key.SerialNumber ?? throw new InvalidOperationException("Serial number required");
 
             var setCommand = new Management.Commands.SetDeviceInfoCommand

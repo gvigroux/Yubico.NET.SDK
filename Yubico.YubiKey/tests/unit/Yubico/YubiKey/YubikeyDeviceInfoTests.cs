@@ -56,7 +56,7 @@ namespace Yubico.YubiKey
         {
             const int serialNumberTag = 0x02;
             Assert.Null(DeviceInfoFor(serialNumberTag).SerialNumber);
-            Assert.Equal(123456789, DeviceInfoFor(serialNumberTag, FromHex("075BCD15")).SerialNumber);
+            Assert.Equal("123456789", DeviceInfoFor(serialNumberTag, FromHex("075BCD15")).SerialNumber);
         }
 
         [Fact]

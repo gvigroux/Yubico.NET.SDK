@@ -63,7 +63,7 @@ namespace Yubico.YubiKey.TestUtilities
         public bool IsPinComplexityEnabled { get; } = false;
 
         /// <inheritdoc />
-        public int? SerialNumber { get; private set; }
+        public string? SerialNumber { get; private set; }
 
         /// <inheritdoc />
         public bool IsFipsSeries { get; private set; }
@@ -94,6 +94,8 @@ namespace Yubico.YubiKey.TestUtilities
 
         /// <inheritdoc />
         public bool ConfigurationLocked { get; private set; }
+
+        int IYubiKeyDeviceInfo.PinUvAuthParamLength => throw new NotImplementedException();
 
         #endregion
 

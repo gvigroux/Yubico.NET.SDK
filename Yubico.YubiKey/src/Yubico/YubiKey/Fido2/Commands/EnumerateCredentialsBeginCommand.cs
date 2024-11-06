@@ -74,7 +74,7 @@ namespace Yubico.YubiKey.Fido2.Commands
             RelyingParty relyingParty,
             ReadOnlyMemory<byte> pinUvAuthToken,
             PinUvAuthProtocolBase authProtocol,
-            IYubiKeyDevice device)
+            IYubiKeyDevice? device = null)
             : base(new CredentialManagementCommand(
             SubCmdEnumerateCredsBegin, EncodeParams(relyingParty), pinUvAuthToken, authProtocol, device))
         {

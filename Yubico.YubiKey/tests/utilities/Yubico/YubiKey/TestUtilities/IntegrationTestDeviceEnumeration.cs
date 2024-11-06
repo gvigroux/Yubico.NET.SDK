@@ -89,7 +89,7 @@ namespace Yubico.YubiKey.TestUtilities
         /// </summary>
         /// <param name="serialNumber"></param>
         /// <returns></returns>
-        public static IYubiKeyDevice GetBySerial(int serialNumber)
+        public static IYubiKeyDevice GetBySerial(string serialNumber)
             => GetTestDevices().Single(d => d.SerialNumber == serialNumber);
 
         /// <summary>
@@ -105,7 +105,7 @@ namespace Yubico.YubiKey.TestUtilities
 
             static bool IsAllowedKey(IYubiKeyDevice key)
                 => key.SerialNumber == null ||
-                   Instance.AllowedSerialNumbers.Contains(key.SerialNumber.Value.ToString());
+                   Instance.AllowedSerialNumbers.Contains(key.SerialNumber);
         }
 
         /// <summary>

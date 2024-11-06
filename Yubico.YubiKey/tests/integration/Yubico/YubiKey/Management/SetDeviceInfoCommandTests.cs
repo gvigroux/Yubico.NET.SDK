@@ -45,7 +45,7 @@ namespace Yubico.YubiKey.Management
         {
             IYubiKeyDevice beginningTestDevice = IntegrationTestDeviceEnumeration.GetTestDevice(testDeviceType);
 
-            int testDeviceSerialNumber = beginningTestDevice.SerialNumber!.Value;
+            string testDeviceSerialNumber = beginningTestDevice.SerialNumber!;
 
             using (IYubiKeyConnection connection = beginningTestDevice.Connect(YubiKeyApplication.Management))
             {
@@ -68,7 +68,7 @@ namespace Yubico.YubiKey.Management
         {
             IYubiKeyDevice beginningTestDevice = IntegrationTestDeviceEnumeration.GetTestDevice(testDeviceType);
 
-            int testDeviceSerialNumber = beginningTestDevice.SerialNumber!.Value;
+            string testDeviceSerialNumber = beginningTestDevice.SerialNumber!;
 
             using (IYubiKeyConnection connection = beginningTestDevice.Connect(YubiKeyApplication.Management))
             {

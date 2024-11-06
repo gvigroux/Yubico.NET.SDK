@@ -20,7 +20,7 @@ namespace Yubico.YubiKey.TestUtilities
     {
         private IYubiKeyConnection? _connection;
         private readonly IYubiKeyDevice? _device;
-        private int? _serialNumber;
+        private string? _serialNumber;
         private bool _disposed;
 
         public IYubiKeyConnection Connection =>
@@ -29,7 +29,7 @@ namespace Yubico.YubiKey.TestUtilities
         public IYubiKeyDevice Device =>
             _device ?? throw new ObjectDisposedException("Device unavailable.");
 
-        public int SerialNumber =>
+        public string SerialNumber =>
             _serialNumber ?? throw new InvalidOperationException("No serial number.");
 
         public SimpleIntegrationTestConnection(
