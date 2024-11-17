@@ -90,26 +90,47 @@ namespace Yubico.YubiKey
         {
             var log = Log.GetLogger(typeof(SmartCardDeviceInfoFactory).FullName!);
 
-            try
+            // Thales Implementation
+
+            if (device.IsThaleDevice())
             {
-                if( device.IsThaleDevice() )
+                deviceInfo = new YubiKeyDeviceInfo
                 {
-                    byte[] a = { 0xA0, 0x00, 0x00, 0x00, 0x03, 0x00, 0x00, 0x00 };
-                    using var connection2 = new SmartCardConnection(device, a);
+                    PinUvAuthParamLength = 32,
+                    AvailableUsbCapabilities = YubiKeyCapabilities.Fido2 | YubiKeyCapabilities.Piv | YubiKeyCapabilities.Ccid,
+                    EnabledUsbCapabilities = YubiKeyCapabilities.Fido2 | YubiKeyCapabilities.Piv | YubiKeyCapabilities.Ccid,
+                    AvailableNfcCapabilities = YubiKeyCapabilities.Fido2 | YubiKeyCapabilities.Piv | YubiKeyCapabilities.Ccid,
+                    EnabledNfcCapabilities = YubiKeyCapabilities.Fido2 | YubiKeyCapabilities.Piv | YubiKeyCapabilities.Ccid,
+                    FormFactor = FormFactor.UsbCKeychain
+                };
+
+                try
+                {
+                    // Connect to Card Manager to get SerialNumber
+                    byte[] cardManager = { 0xA0, 0x00, 0x00, 0x00, 0x03, 0x00, 0x00, 0x00 };
+                    using var connection2 = new SmartCardConnection(device, cardManager);
                     var response = connection2.SendCommand(new GetThalesSerialNumberCommand());
-                    deviceInfo = new YubiKeyDeviceInfo();
                     if (response.Status == ResponseStatus.Success)
                     {
                         deviceInfo.SerialNumber = response.GetData();
                         log.LogInformation("SerialNumber : {SerialNumber}", deviceInfo.SerialNumber);
                         return true;
                     }
-                    return false;
+                }
+                catch (Core.Iso7816.ApduException e)
+                {
+                    ErrorHandler(
+                        e,
+                        "An ISO 7816 application has encountered an error when trying to get device info from management.");
                 }
 
+                return true;
+            }
 
+            // Yubico Implementation
 
-
+            try
+            {
 
                 log.LogInformation("Attempting to read device info via the management application.");
                 using var connection = new SmartCardConnection(device, YubiKeyApplication.Management);

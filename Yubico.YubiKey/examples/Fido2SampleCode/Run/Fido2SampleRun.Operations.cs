@@ -198,7 +198,7 @@ namespace Yubico.YubiKey.Sample.Fido2SampleCode
                 }
             }
 
-            return false;
+            return true;
         }
 
         public bool RunVerifyUv()

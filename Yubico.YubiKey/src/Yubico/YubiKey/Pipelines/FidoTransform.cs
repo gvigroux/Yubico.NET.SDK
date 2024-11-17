@@ -140,7 +140,7 @@ namespace Yubico.YubiKey.Pipelines
 
         private byte[] TransmitCommand(uint channelId, byte commandByte, byte[] data, out byte responseByte)
         {
-
+            /*
             Console.WriteLine("");
             if(commandByte == 0x10)
             {
@@ -149,7 +149,7 @@ namespace Yubico.YubiKey.Pipelines
             else
             {
                 Console.WriteLine($"Command {commandByte.ToString("X2", CultureInfo.CurrentCulture)} with Data {Regex.Replace(BitConverter.ToString(data), "-", string.Empty, RegexOptions.IgnoreCase)}");
-            }
+            }*/
             SendRequest(channelId, commandByte, data);
 
             byte cmdByte = commandByte;
@@ -159,8 +159,8 @@ namespace Yubico.YubiKey.Pipelines
             }
 
             byte[] responseData = ReceiveResponse(channelId, cmdByte, out responseByte);
-            Console.WriteLine($"Response {Regex.Replace(BitConverter.ToString(responseData), "-", string.Empty, RegexOptions.IgnoreCase)}");
-            Console.WriteLine("");
+            //Console.WriteLine($"Response {Regex.Replace(BitConverter.ToString(responseData), "-", string.Empty, RegexOptions.IgnoreCase)}");
+            //Console.WriteLine("");
 
             return responseData;
         }

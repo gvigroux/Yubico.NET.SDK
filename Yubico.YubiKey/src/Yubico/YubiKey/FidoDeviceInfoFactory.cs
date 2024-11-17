@@ -13,6 +13,7 @@
 // limitations under the License.
 
 using System;
+using System.Buffers.Binary;
 using System.Diagnostics.CodeAnalysis;
 using Microsoft.Extensions.Logging;
 using Yubico.Core.Devices.Hid;
@@ -77,11 +78,19 @@ namespace Yubico.YubiKey
                 {
                     var response = connection.SendCommand(new GetThalesSerialNumberCommand());
                     if (response.Status == ResponseStatus.Success)
-                    {                        
+                    {
+                        Log.LogInformation("Successfully read device info via FIDO interface management command.");
+              
+                        //TODO Improve this list
                         deviceInfo = new YubiKeyDeviceInfo
                         {
                             SerialNumber = response.GetData(),
-                            PinUvAuthParamLength = 32
+                            PinUvAuthParamLength = 32,
+                            AvailableUsbCapabilities = YubiKeyCapabilities.Fido2 | YubiKeyCapabilities.Piv | YubiKeyCapabilities.Ccid,
+                            EnabledUsbCapabilities = YubiKeyCapabilities.Fido2 | YubiKeyCapabilities.Piv | YubiKeyCapabilities.Ccid,
+                            AvailableNfcCapabilities = YubiKeyCapabilities.Fido2 | YubiKeyCapabilities.Piv | YubiKeyCapabilities.Ccid,
+                            EnabledNfcCapabilities = YubiKeyCapabilities.Fido2 | YubiKeyCapabilities.Piv | YubiKeyCapabilities.Ccid,
+                            FormFactor = FormFactor.UsbCKeychain
                         };
                         return true;
                     }
